@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Consonants Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #161922;
+    --card: #1e222d;
+    --border: #2a2f3e;
+    --accent: #7c6aff;
+    --accent2: #ff6a7c;
+    --correct: #3ddc84;
+    --wrong: #ff4d6d;
+    --text: #e8eaf0;
+    --muted: #6b7280;
+    --highlight: #ffd166;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,106,255,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 90%, rgba(255,106,124,0.08) 0%, transparent 55%);
+  }
+
+  #app {
+    width: 100%;
+    max-width: 740px;
+  }
+
+  /* ── START SCREEN ── */
+  #start-screen {
+    text-align: center;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .logo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(124,106,255,0.12);
+    border: 1px solid rgba(124,106,255,0.3);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 32px;
+  }
+
+  .logo-badge::before { content: '◉'; font-size: 10px; }
+
+  .mpt-title {
+    font-size: clamp(2.8rem, 7vw, 4.8rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #ffe066 0%, #ffb347 40%, #ffd166 70%, #fffacd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 32px rgba(255,209,102,0.25));
+  }
+
+  #start-screen h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #e8eaf0 30%, #7c6aff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  #start-screen p {
+    color: var(--muted);
+    font-size: 1rem;
+    margin-bottom: 48px;
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  .stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+
+  .stat-pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 22px;
+    text-align: center;
+  }
+
+  .stat-pill .num {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-pill .label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .btn-start {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 16px 48px;
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-start::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.1);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,106,255,0.4); }
+  .btn-start:hover::after { opacity: 1; }
+  .btn-start:active { transform: translateY(0); }
+
+  /* ── QUIZ SCREEN ── */
+  #quiz-screen { display: none; }
+
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .q-counter {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .q-counter span { color: var(--text); font-weight: 600; }
+
+  .score-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    background: rgba(61,220,132,0.1);
+    border: 1px solid rgba(61,220,132,0.25);
+    color: var(--correct);
+    padding: 5px 14px;
+    border-radius: 100px;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 4px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .topic-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,209,102,0.1);
+    border: 1px solid rgba(255,209,102,0.25);
+    color: var(--highlight);
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+  }
+
+  .question-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .question-text {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.4s 0.1s ease both;
+  }
+
+  @media (max-width: 520px) {
+    .options-grid { grid-template-columns: 1fr; }
+    .question-card { padding: 20px; }
+  }
+
+  .option-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.88rem;
+    color: var(--text);
+    transition: all 0.18s;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    line-height: 1.5;
+    position: relative;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: rgba(124,106,255,0.08);
+    transform: translateX(3px);
+  }
+
+  .option-btn:disabled { cursor: default; }
+
+  .option-letter {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--muted);
+    transition: all 0.18s;
+  }
+
+  .option-btn:hover:not(:disabled) .option-letter {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: rgba(61,220,132,0.08);
+  }
+
+  .option-btn.correct .option-letter {
+    background: var(--correct);
+    color: #0d0f14;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: rgba(255,77,109,0.08);
+  }
+
+  .option-btn.wrong .option-letter {
+    background: var(--wrong);
+    color: #fff;
+  }
+
+  .option-btn.dimmed {
+    opacity: 0.4;
+  }
+
+  .feedback-box {
+    display: none;
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    animation: fadeUp 0.25s ease both;
+  }
+
+  .feedback-box.correct {
+    background: rgba(61,220,132,0.08);
+    border: 1px solid rgba(61,220,132,0.3);
+    color: var(--correct);
+  }
+
+  .feedback-box.wrong {
+    background: rgba(255,77,109,0.07);
+    border: 1px solid rgba(255,77,109,0.3);
+    color: #ff7d93;
+  }
+
+  .feedback-box strong { display: block; margin-bottom: 4px; font-size: 0.95rem; }
+
+  .btn-continue {
+    display: none;
+    width: 100%;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 15px;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: all 0.2s;
+    animation: fadeUp 0.3s ease both;
+  }
+
+  .btn-continue:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* ── RESULT SCREEN ── */
+  #result-screen {
+    display: none;
+    text-align: center;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .result-circle {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent) calc(var(--pct) * 1%), var(--border) 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 32px;
+    position: relative;
+  }
+
+  .result-circle::after {
+    content: '';
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: var(--bg);
+  }
+
+  .result-pct {
+    font-size: 1.8rem;
+    font-weight: 800;
+    z-index: 1;
+  }
+
+  #result-screen h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+
+  #result-screen p {
+    color: var(--muted);
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+  }
+
+  .result-stats {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin: 32px 0;
+    flex-wrap: wrap;
+  }
+
+  .result-stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 28px;
+    min-width: 110px;
+  }
+
+  .result-stat .n {
+    font-size: 2rem;
+    font-weight: 800;
+    display: block;
+  }
+
+  .result-stat .l {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .result-stat.c .n { color: var(--correct); }
+  .result-stat.w .n { color: var(--wrong); }
+
+  .btn-restart {
+    background: transparent;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    border-radius: 14px;
+    padding: 14px 40px;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-restart:hover { background: var(--accent); color: #fff; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- START -->
+  <div id="start-screen">
+    <div class="mpt-title">MPT Quiz</div>
+    <div class="logo-badge">PHONETICS · IPA</div>
+    <h1>English Consonants<br>Quiz</h1>
+    <p>Test your knowledge of English consonant classification —<br>place, manner, voicing & more. 50 randomized questions.</p>
+    <div class="stats-row">
+      <div class="stat-pill"><span class="num">50</span><span class="label">Questions</span></div>
+      <div class="stat-pill"><span class="num">24</span><span class="label">Consonants</span></div>
+      <div class="stat-pill"><span class="num">4</span><span class="label">Topics</span></div>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Start Quiz →</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz-screen">
+    <div class="top-bar">
+      <div class="q-counter">Question <span id="q-num">1</span> / 50</div>
+      <div class="score-badge" id="score-display">✓ 0</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <div class="topic-tag" id="topic-tag">Topic</div>
+    <div class="question-card"><div class="question-text" id="question-text"></div></div>
+    <div class="options-grid" id="options-grid"></div>
+    <div class="feedback-box" id="feedback-box"></div>
+    <button class="btn-continue" id="btn-continue" onclick="nextQuestion()">Continue →</button>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result-screen">
+    <div class="result-circle" id="result-circle" style="--pct:0">
+      <div class="result-pct" id="result-pct">0%</div>
+    </div>
+    <h2 id="result-title">Well done!</h2>
+    <p id="result-msg"></p>
+    <div class="result-stats">
+      <div class="result-stat c"><span class="n" id="r-correct">0</span><span class="l">Correct</span></div>
+      <div class="result-stat w"><span class="n" id="r-wrong">0</span><span class="l">Wrong</span></div>
+      <div class="result-stat"><span class="n" id="r-pct">0%</span><span class="l">Score</span></div>
+    </div>
+    <button class="btn-restart" onclick="restartQuiz()">Try Again</button>
+  </div>
+
+</div>
+
+<script>
+const ALL_QUESTIONS = [
+  // ── PLACE OF ARTICULATION (18 câu) ──
+  {
+    topic: "Place of Articulation",
+    q: "Which sound is classified as a BILABIAL?",
+    correct: "/m/",
+    wrong: ["/n/", "/ŋ/", "/v/"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "Which of these is a LABIO-DENTAL consonant?",
+    correct: "/f/",
+    wrong: ["/θ/", "/s/", "/p/"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "/θ/ and /ð/ are classified as which place of articulation?",
+    correct: "Dentals",
+    wrong: ["Alveolars", "Bilabials", "Velars"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "Which sound is an ALVEOLAR?",
+    correct: "/n/",
+    wrong: ["/m/", "/ŋ/", "/ʒ/"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "Where is /r/ articulated?",
+    correct: "Retroflex — tongue tip curled toward post-alveolar region",
+    wrong: ["Alveolar — tip touches alveolar ridge", "Palatal — tongue touches hard palate", "Velar — back tongue touches soft palate"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "Which sounds are VELARS?",
+    correct: "/k/, /g/, /ŋ/",
+    wrong: ["/t/, /d/, /n/", "/p/, /b/, /m/", "/ʃ/, /ʒ/, /tʃ/"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "/ʃ/ and /tʃ/ belong to which place of articulation?",
+    correct: "Palato-alveolar (post-alveolar)",
+    wrong: ["Alveolar", "Palatal", "Velar"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "Which sound is classified as PALATAL?",
+    correct: "/j/",
+    wrong: ["/w/", "/r/", "/l/"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "/h/ is produced at which place of articulation?",
+    correct: "Glottal",
+    wrong: ["Velar", "Palatal", "Alveolar"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "Which pair are both BILABIALS?",
+    correct: "/b/ and /p/",
+    wrong: ["/b/ and /v/", "/p/ and /f/", "/m/ and /n/"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "What is the place of articulation for /v/?",
+    correct: "Labio-dental",
+    wrong: ["Bilabial", "Dental", "Alveolar"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "Which sound is NOT an alveolar?",
+    correct: "/ʒ/",
+    wrong: ["/s/", "/z/", "/l/"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "The sound /w/ is classified as which place of articulation?",
+    correct: "Bilabial",
+    wrong: ["Velar", "Labio-dental", "Palatal"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "Which sound involves the BACK of the tongue touching the soft palate?",
+    correct: "/g/",
+    wrong: ["/d/", "/b/", "/ð/"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "How many alveolar consonants are there in English?",
+    correct: "6 — /t/, /d/, /s/, /z/, /l/, /n/",
+    wrong: ["4 — /t/, /d/, /s/, /z/", "5 — /t/, /d/, /s/, /z/, /n/", "7 — /t/, /d/, /s/, /z/, /l/, /n/, /r/"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "Which place of articulation involves the LOWER LIP pressed against the UPPER TEETH?",
+    correct: "Labio-dental",
+    wrong: ["Bilabial", "Dental", "Alveolar"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "Which sound is produced with the TIP OF THE TONGUE between upper and lower teeth?",
+    correct: "/ð/",
+    wrong: ["/z/", "/v/", "/dʒ/"]
+  },
+  {
+    topic: "Place of Articulation",
+    q: "Which of these groups contains ONLY palato-alveolar sounds?",
+    correct: "/ʃ/, /ʒ/, /tʃ/, /dʒ/",
+    wrong: ["/ʃ/, /ʒ/, /s/, /z/", "/tʃ/, /dʒ/, /t/, /d/", "/ʃ/, /tʃ/, /j/, /dʒ/"]
+  },
+
+  // ── MANNER OF ARTICULATION (16 câu) ──
+  {
+    topic: "Manner of Articulation",
+    q: "Which group contains ONLY plosives?",
+    correct: "/p/, /b/, /t/, /d/, /k/, /g/",
+    wrong: ["/p/, /b/, /t/, /d/, /s/, /z/", "/p/, /b/, /f/, /v/, /k/, /g/", "/t/, /d/, /tʃ/, /dʒ/, /k/, /g/"]
+  },
+  {
+    topic: "Manner of Articulation",
+    q: "/tʃ/ and /dʒ/ are classified as which manner of articulation?",
+    correct: "Affricates",
+    wrong: ["Fricatives", "Plosives", "Approximants"]
+  },
+  {
+    topic: "Manner of Articulation",
+    q: "Which sound is a NASAL?",
+    correct: "/ŋ/",
+    wrong: ["/g/", "/k/", "/l/"]
+  },
+  {
+    topic: "Manner of Articulation",
+    q: "What is the manner of articulation of /l/?",
+    correct: "Lateral — air passes at both sides of tongue",
+    wrong: ["Nasal — air passes through the nose", "Fricative — airstream is constricted", "Approximant — tongue approaches alveolar ridge"]
+  },
+  {
+    topic: "Manner of Articulation",
+    q: "Which group contains ONLY fricatives?",
+    correct: "/f/, /v/, /s/, /z/, /ʃ/, /ʒ/, /θ/, /ð/, /h/",
+    wrong: ["/f/, /v/, /s/, /z/, /ʃ/, /ʒ/, /tʃ/, /dʒ/", "/f/, /v/, /s/, /z/, /θ/, /ð/, /tʃ/, /h/", "/s/, /z/, /ʃ/, /ʒ/, /θ/, /ð/, /h/, /l/"]
+  },
+  {
+    topic: "Manner of Articulation",
+    q: "What is the manner of articulation of /w/ and /j/?",
+    correct: "Approximants (Glides)",
+    wrong: ["Fricatives", "Nasals", "Laterals"]
+  },
+  {
+    topic: "Manner of Articulation",
+    q: "How does a PLOSIVE differ from an AFFRICATE?",
+    correct: "Plosives release the airstream explosively; affricates release it slowly with friction",
+    wrong: ["Plosives use friction; affricates stop airflow completely", "Plosives pass air through nose; affricates pass it through mouth", "Plosives are voiced; affricates are voiceless"]
+  },
+  {
+    topic: "Manner of Articulation",
+    q: "Which consonant is the LATERAL approximant?",
+    correct: "/l/",
+    wrong: ["/r/", "/w/", "/j/"]
+  },
+  {
+    topic: "Manner of Articulation",
+    q: "What is the manner of articulation for /m/, /n/, and /ŋ/?",
+    correct: "Nasals",
+    wrong: ["Plosives", "Fricatives", "Approximants"]
+  },
+  {
+    topic: "Manner of Articulation",
+    q: "Which sound is NOT a fricative?",
+    correct: "/dʒ/",
+    wrong: ["/ʒ/", "/θ/", "/h/"]
+  },
+  {
+    topic: "Manner of Articulation",
+    q: "/r/ is best described as which manner?",
+    correct: "Approximant — tongue approaches but doesn't fully touch",
+    wrong: ["Fricative — produces friction", "Lateral — air escapes at sides", "Plosive — air is fully stopped"]
+  },
+  {
+    topic: "Manner of Articulation",
+    q: "Which set contains ONLY affricates?",
+    correct: "/tʃ/ and /dʒ/",
+    wrong: ["/tʃ/ and /ʃ/", "/dʒ/ and /ʒ/", "/tʃ/ and /s/"]
+  },
+  {
+    topic: "Manner of Articulation",
+    q: "How many fricatives are there in English consonants?",
+    correct: "9",
+    wrong: ["7", "8", "6"]
+  },
+  {
+    topic: "Manner of Articulation",
+    q: "What makes /h/ different from other fricatives?",
+    correct: "It is produced by rapid closing of the glottis, not constricting the oral tract",
+    wrong: ["It is voiced while others are voiceless", "It is a nasal fricative", "It is the only dental fricative"]
+  },
+  {
+    topic: "Manner of Articulation",
+    q: "In an AFFRICATE, the airstream is first...",
+    correct: "Stopped completely, then released slowly with friction",
+    wrong: ["Constricted throughout to create friction", "Released with an explosion, then stopped", "Passed through the nose"]
+  },
+  {
+    topic: "Manner of Articulation",
+    q: "Which manner of articulation describes /n/: air passes through the nose while the mouth is CLOSED?",
+    correct: "Nasal",
+    wrong: ["Lateral", "Approximant", "Plosive"]
+  },
+
+  // ── VOICING (10 câu) ──
+  {
+    topic: "Voicing",
+    q: "Which sound is VOICELESS?",
+    correct: "/ʃ/",
+    wrong: ["/ʒ/", "/v/", "/z/"]
+  },
+  {
+    topic: "Voicing",
+    q: "Which sound is VOICED?",
+    correct: "/ð/",
+    wrong: ["/θ/", "/f/", "/s/"]
+  },
+  {
+    topic: "Voicing",
+    q: "How many VOICELESS consonants are there in English?",
+    correct: "9",
+    wrong: ["7", "11", "8"]
+  },
+  {
+    topic: "Voicing",
+    q: "What does 'Fortis' mean in the context of voiceless sounds?",
+    correct: "Strong force of articulation",
+    wrong: ["Weak force of articulation", "Vocal cords vibrate strongly", "Airstream passes through nose"]
+  },
+  {
+    topic: "Voicing",
+    q: "All nasals (/m/, /n/, /ŋ/) are...",
+    correct: "Voiced",
+    wrong: ["Voiceless", "Some voiced, some voiceless", "Neither voiced nor voiceless"]
+  },
+  {
+    topic: "Voicing",
+    q: "Which of these is a VOICELESS sound?",
+    correct: "/tʃ/",
+    wrong: ["/dʒ/", "/ð/", "/ŋ/"]
+  },
+  {
+    topic: "Voicing",
+    q: "What physical feature characterizes a VOICED consonant?",
+    correct: "Narrow gap between vocal cords — they vibrate",
+    wrong: ["Wide gap between vocal cords — no vibration", "Air is blocked in the nose", "Strong force of articulation (Fortis)"]
+  },
+  {
+    topic: "Voicing",
+    q: "Which set contains ONLY voiced consonants?",
+    correct: "/b/, /d/, /g/, /v/, /z/",
+    wrong: ["/b/, /d/, /g/, /p/, /z/", "/v/, /f/, /z/, /s/, /ð/", "/b/, /d/, /g/, /k/, /ŋ/"]
+  },
+  {
+    topic: "Voicing",
+    q: "Which set contains ONLY voiceless consonants?",
+    correct: "/p/, /t/, /k/, /f/, /s/, /ʃ/, /θ/, /tʃ/, /h/",
+    wrong: ["/p/, /t/, /k/, /f/, /s/, /ʃ/, /θ/, /tʃ/, /ð/", "/p/, /t/, /k/, /f/, /s/, /ʃ/, /tʃ/, /dʒ/, /h/", "/p/, /t/, /k/, /f/, /s/, /θ/, /tʃ/, /h/, /z/"]
+  },
+  {
+    topic: "Voicing",
+    q: "What term describes the weak articulation force of voiced consonants?",
+    correct: "Lenis",
+    wrong: ["Fortis", "Aspirate", "Nasal"]
+  },
+
+  // ── POSITION OF SOFT PALATE (6 câu) ──
+  {
+    topic: "Position of Soft Palate",
+    q: "When the soft palate is LOWERED, which type of sounds are produced?",
+    correct: "Nasals — air exits through the nose",
+    wrong: ["Orals — air exits through the mouth", "Fricatives — air is constricted", "Plosives — air is stopped"]
+  },
+  {
+    topic: "Position of Soft Palate",
+    q: "Which sounds are NASAL consonants in English?",
+    correct: "/m/, /n/, /ŋ/",
+    wrong: ["/m/, /n/, /l/", "/m/, /ŋ/, /w/", "/n/, /ŋ/, /r/"]
+  },
+  {
+    topic: "Position of Soft Palate",
+    q: "For ORAL consonants, how is the soft palate positioned?",
+    correct: "Raised — closing the nasal passage, air exits through mouth",
+    wrong: ["Lowered — opening the nasal passage", "Neutral — both nasal and oral passages open", "It does not move for oral consonants"]
+  },
+  {
+    topic: "Position of Soft Palate",
+    q: "Which nasal is a VELAR (back of tongue touches soft palate)?",
+    correct: "/ŋ/",
+    wrong: ["/m/", "/n/", "/l/"]
+  },
+  {
+    topic: "Position of Soft Palate",
+    q: "Is /l/ nasal or oral?",
+    correct: "Oral — soft palate is raised",
+    wrong: ["Nasal — soft palate is lowered", "It alternates depending on context", "It is produced with mixed nasal/oral airflow"]
+  },
+  {
+    topic: "Position of Soft Palate",
+    q: "Which consonant is BOTH oral AND lateral (air exits at sides of tongue)?",
+    correct: "/l/",
+    wrong: ["/n/", "/r/", "/m/"]
+  },
+];
+
+let questions = [];
+let current = 0;
+let score = 0;
+let answered = false;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  questions = shuffle(ALL_QUESTIONS).slice(0, 50);
+  current = 0;
+  score = 0;
+  answered = false;
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+  loadQuestion();
+}
+
+function loadQuestion() {
+  answered = false;
+  const q = questions[current];
+  document.getElementById('q-num').textContent = current + 1;
+  document.getElementById('score-display').textContent = `✓ ${score}`;
+  document.getElementById('progress-fill').style.width = `${(current / 50) * 100}%`;
+  document.getElementById('topic-tag').textContent = q.topic;
+  document.getElementById('question-text').textContent = q.q;
+
+  const options = shuffle([q.correct, ...q.wrong]);
+  const letters = ['A', 'B', 'C', 'D'];
+  const grid = document.getElementById('options-grid');
+  grid.innerHTML = '';
+
+  options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(btn, opt, q.correct);
+    grid.appendChild(btn);
+  });
+
+  const fb = document.getElementById('feedback-box');
+  fb.style.display = 'none';
+  fb.className = 'feedback-box';
+
+  const cont = document.getElementById('btn-continue');
+  cont.style.display = 'none';
+}
+
+function selectAnswer(btn, chosen, correct) {
+  if (answered) return;
+  answered = true;
+
+  const btns = document.querySelectorAll('.option-btn');
+  const isCorrect = chosen === correct;
+
+  btns.forEach(b => {
+    const txt = b.querySelector('span:last-child').textContent;
+    b.disabled = true;
+    if (txt === correct) {
+      b.classList.add('correct');
+    } else if (b === btn && !isCorrect) {
+      b.classList.add('wrong');
+    } else {
+      b.classList.add('dimmed');
+    }
+  });
+
+  if (isCorrect) score++;
+
+  const fb = document.getElementById('feedback-box');
+  fb.style.display = 'block';
+  if (isCorrect) {
+    fb.className = 'feedback-box correct';
+    fb.innerHTML = `<strong>✓ Correct!</strong>Great, you know your consonants.`;
+  } else {
+    fb.className = 'feedback-box wrong';
+    fb.innerHTML = `<strong>✗ Incorrect</strong>Correct answer: <em>${correct}</em>`;
+  }
+
+  document.getElementById('btn-continue').style.display = 'block';
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= 50) {
+    showResult();
+  } else {
+    // Re-animate the card
+    const card = document.querySelector('.question-card');
+    card.style.animation = 'none';
+    card.offsetHeight;
+    card.style.animation = '';
+    loadQuestion();
+  }
+}
+
+function showResult() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  const rs = document.getElementById('result-screen');
+  rs.style.display = 'block';
+  rs.style.animation = 'none';
+  rs.offsetHeight;
+  rs.style.animation = 'fadeUp 0.6s ease both';
+
+  const pct = Math.round((score / 50) * 100);
+  document.getElementById('result-circle').style.setProperty('--pct', pct);
+  document.getElementById('result-pct').textContent = pct + '%';
+  document.getElementById('r-correct').textContent = score;
+  document.getElementById('r-wrong').textContent = 50 - score;
+  document.getElementById('r-pct').textContent = pct + '%';
+
+  let title, msg;
+  if (pct >= 90) { title = '🏆 Excellent!'; msg = 'Outstanding performance! You have mastered English consonant phonetics.'; }
+  else if (pct >= 75) { title = '🎉 Great job!'; msg = 'Strong understanding of consonant classification. Keep it up!'; }
+  else if (pct >= 60) { title = '👍 Good effort!'; msg = 'Solid foundation. Review the topics you missed and try again.'; }
+  else if (pct >= 40) { title = '📖 Keep studying!'; msg = 'Some concepts need more attention. Review place, manner, and voicing.'; }
+  else { title = '💪 Don\'t give up!'; msg = 'Phonetics takes practice! Go over the material and try again.'; }
+
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-msg').textContent = msg;
+}
+
+function restartQuiz() {
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('start-screen').style.display = 'block';
+}
+</script>
+</body>
+</html>
