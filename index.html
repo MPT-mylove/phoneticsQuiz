@@ -451,6 +451,101 @@
 
   .btn-restart:hover { background: var(--accent); color: #fff; }
 
+  /* ── TOPIC BREAKDOWN ── */
+  .breakdown {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px 24px;
+    margin: 0 0 28px;
+    text-align: left;
+  }
+  .breakdown-title {
+    font-size: 0.72rem;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .topic-row { margin-bottom: 14px; }
+  .topic-row:last-child { margin-bottom: 0; }
+  .topic-row-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .topic-name { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+  .topic-fraction { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--muted); }
+  .topic-bar-bg { width: 100%; height: 6px; background: var(--border); border-radius: 6px; overflow: hidden; }
+  .topic-bar-fill { height: 100%; border-radius: 6px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
+  .topic-bar-fill.great { background: var(--correct); }
+  .topic-bar-fill.ok    { background: var(--highlight); }
+  .topic-bar-fill.poor  { background: var(--wrong); }
+  .topic-pct { font-family: 'DM Mono', monospace; font-size: 0.72rem; margin-top: 4px; text-align: right; }
+  .topic-pct.great { color: var(--correct); }
+  .topic-pct.ok    { color: var(--highlight); }
+  .topic-pct.poor  { color: var(--wrong); }
+
+  /* ── WRONG DETAIL ── */
+  #wrong-section {
+    text-align: left;
+    margin-bottom: 28px;
+  }
+  .wrong-topic-header {
+    font-size: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    padding: 8px 0 8px;
+    border-bottom: 1px solid var(--border);
+    margin: 16px 0 10px;
+  }
+  .wrong-topic-header:first-child { margin-top: 0; }
+  .wrong-card {
+    display: flex;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--wrong);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    animation: fadeUp 0.3s ease both;
+  }
+  .wrong-qnum {
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--wrong);
+    padding-top: 2px;
+    min-width: 28px;
+  }
+  .wrong-body { flex: 1; min-width: 0; }
+  .wrong-question {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .wrong-your {
+    font-size: 0.78rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--wrong);
+    margin-bottom: 4px;
+  }
+  .wrong-your span { opacity: 0.85; }
+  .wrong-correct {
+    font-size: 0.78rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--correct);
+  }
+  .wrong-correct span { font-weight: 600; }
+
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
@@ -499,6 +594,14 @@
       <div class="result-stat c"><span class="n" id="r-correct">0</span><span class="l">Correct</span></div>
       <div class="result-stat w"><span class="n" id="r-wrong">0</span><span class="l">Wrong</span></div>
       <div class="result-stat"><span class="n" id="r-pct">0%</span><span class="l">Score</span></div>
+    </div>
+    <div class="breakdown">
+      <div class="breakdown-title">📊 Performance by Topic</div>
+      <div id="topic-breakdown"></div>
+    </div>
+    <div id="wrong-section">
+      <div class="breakdown-title" style="margin-bottom:12px;">❌ Câu trả lời sai</div>
+      <div id="wrong-list"></div>
     </div>
     <button class="btn-restart" onclick="restartQuiz()">Try Again</button>
   </div>
@@ -820,6 +923,8 @@ let questions = [];
 let current = 0;
 let score = 0;
 let answered = false;
+let topicStats = {};
+let wrongLog = []; // {qNum, topic, question, chosen, correct}
 
 function shuffle(arr) {
   const a = [...arr];
@@ -835,6 +940,8 @@ function startQuiz() {
   current = 0;
   score = 0;
   answered = false;
+  topicStats = {};
+  wrongLog = [];
   document.getElementById('start-screen').style.display = 'none';
   document.getElementById('result-screen').style.display = 'none';
   document.getElementById('quiz-screen').style.display = 'block';
@@ -892,6 +999,12 @@ function selectAnswer(btn, chosen, correct) {
 
   if (isCorrect) score++;
 
+  const topic = questions[current].topic;
+  if (!topicStats[topic]) topicStats[topic] = { correct: 0, total: 0 };
+  topicStats[topic].total++;
+  if (isCorrect) topicStats[topic].correct++;
+  if (!isCorrect) wrongLog.push({ qNum: current + 1, topic, question: questions[current].q, chosen, correct });
+
   const fb = document.getElementById('feedback-box');
   fb.style.display = 'block';
   if (isCorrect) {
@@ -943,6 +1056,66 @@ function showResult() {
 
   document.getElementById('result-title').textContent = title;
   document.getElementById('result-msg').textContent = msg;
+
+  // Render topic breakdown
+  const bd = document.getElementById('topic-breakdown');
+  bd.innerHTML = '';
+  const topicOrder = ["Place of Articulation", "Manner of Articulation", "Voicing", "Position of Soft Palate"];
+  topicOrder.forEach(topic => {
+    const s = topicStats[topic];
+    if (!s) return;
+    const p = Math.round((s.correct / s.total) * 100);
+    const cls = p >= 75 ? 'great' : p >= 50 ? 'ok' : 'poor';
+    const row = document.createElement('div');
+    row.className = 'topic-row';
+    row.innerHTML = `
+      <div class="topic-row-header">
+        <span class="topic-name">${topic}</span>
+        <span class="topic-fraction">${s.correct}/${s.total} correct</span>
+      </div>
+      <div class="topic-bar-bg">
+        <div class="topic-bar-fill ${cls}" style="width:0%" data-pct="${p}"></div>
+      </div>
+      <div class="topic-pct ${cls}">${p}%</div>
+    `;
+    bd.appendChild(row);
+  });
+  // Animate bars after paint
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.topic-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.pct + '%';
+    });
+  });
+
+  // Render wrong answers detail
+  const wl = document.getElementById('wrong-list');
+  wl.innerHTML = '';
+  if (wrongLog.length === 0) {
+    document.getElementById('wrong-section').style.display = 'none';
+  } else {
+    document.getElementById('wrong-section').style.display = 'block';
+    const topicOrder = ["Place of Articulation", "Manner of Articulation", "Voicing", "Position of Soft Palate"];
+    topicOrder.forEach(topic => {
+      const items = wrongLog.filter(w => w.topic === topic);
+      if (!items.length) return;
+      const header = document.createElement('div');
+      header.className = 'wrong-topic-header';
+      header.textContent = topic;
+      wl.appendChild(header);
+      items.forEach(w => {
+        const card = document.createElement('div');
+        card.className = 'wrong-card';
+        card.innerHTML = `
+          <div class="wrong-qnum">Q${w.qNum}</div>
+          <div class="wrong-body">
+            <div class="wrong-question">${w.question}</div>
+            <div class="wrong-your">✗ Your answer: <span>${w.chosen}</span></div>
+            <div class="wrong-correct">✓ Correct: <span>${w.correct}</span></div>
+          </div>`;
+        wl.appendChild(card);
+      });
+    });
+  }
 }
 
 function restartQuiz() {
