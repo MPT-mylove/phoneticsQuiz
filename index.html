@@ -3,1124 +3,575 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>English Consonants Quiz</title>
+<title>MPT Quiz – Phonetics & Phonology</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0d0f14;
-    --surface: #161922;
-    --card: #1e222d;
-    --border: #2a2f3e;
-    --accent: #7c6aff;
-    --accent2: #ff6a7c;
-    --correct: #3ddc84;
-    --wrong: #ff4d6d;
-    --text: #e8eaf0;
-    --muted: #6b7280;
-    --highlight: #ffd166;
-  }
+:root{--bg:#0d0f14;--surface:#161922;--card:#1e222d;--border:#2a2f3e;--accent:#7c6aff;--accent2:#ff6a7c;--correct:#3ddc84;--wrong:#ff4d6d;--text:#e8eaf0;--muted:#6b7280;--highlight:#ffd166;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:28px 20px;background-image:radial-gradient(ellipse 80% 60% at 20% 10%,rgba(124,106,255,.12) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 90%,rgba(255,106,124,.08) 0%,transparent 55%);}
+#app{width:100%;max-width:760px;}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* ── START ── */
+#start-screen{text-align:center;animation:fadeUp .6s ease both;}
+.mpt-title{font-size:clamp(2.8rem,7vw,4.8rem);font-weight:800;line-height:1;letter-spacing:-.02em;background:linear-gradient(135deg,#ffe066 0%,#ffb347 40%,#ffd166 70%,#fffacd 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px;filter:drop-shadow(0 0 32px rgba(255,209,102,.25));}
+.logo-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(124,106,255,.12);border:1px solid rgba(124,106,255,.3);border-radius:100px;padding:6px 16px;font-family:'DM Mono',monospace;font-size:12px;color:var(--accent);letter-spacing:.08em;margin-bottom:28px;}
+.logo-badge::before{content:'◉';font-size:10px;}
+#start-screen h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.2;margin-bottom:12px;background:linear-gradient(135deg,#e8eaf0 30%,#7c6aff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#start-screen>p{color:var(--muted);font-size:.95rem;margin-bottom:28px;line-height:1.7;}
+.stats-row{display:flex;justify-content:center;gap:12px;margin-bottom:28px;flex-wrap:wrap;}
+.stat-pill{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 20px;text-align:center;}
+.stat-pill .num{font-size:1.5rem;font-weight:800;color:var(--accent);display:block;}
+.stat-pill .label{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-family:'DM Mono',monospace;}
+.filter-label{font-size:.8rem;color:var(--muted);margin-bottom:12px;}
+.chapter-filter{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px;}
+.ch-btn{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:7px 14px;font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);cursor:pointer;transition:all .18s;letter-spacing:.03em;}
+.ch-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(124,106,255,.1);}
+.ch-btn.all-btn{border-color:rgba(255,209,102,.4);color:var(--highlight);background:rgba(255,209,102,.07);}
+.btn-start{background:var(--accent);color:#fff;border:none;border-radius:14px;padding:16px 48px;font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:all .2s;}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(124,106,255,.4);}
 
-  body {
-    font-family: 'Syne', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    background-image:
-      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,106,255,0.12) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 80% 90%, rgba(255,106,124,0.08) 0%, transparent 55%);
-  }
+/* ── QUIZ ── */
+#quiz-screen{display:none;}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:10px;flex-wrap:wrap;}
+.q-counter{font-family:'DM Mono',monospace;font-size:.83rem;color:var(--muted);}
+.q-counter span{color:var(--text);font-weight:600;}
+.score-badge{font-family:'DM Mono',monospace;font-size:.8rem;background:rgba(61,220,132,.1);border:1px solid rgba(61,220,132,.25);color:var(--correct);padding:5px 12px;border-radius:100px;white-space:nowrap;}
+.timer-badge{font-family:'DM Mono',monospace;font-size:.88rem;font-weight:700;padding:5px 14px;border-radius:100px;border:1px solid rgba(124,106,255,.35);color:var(--accent);background:rgba(124,106,255,.08);transition:all .3s;white-space:nowrap;}
+.timer-badge.warn{border-color:rgba(255,209,102,.5);color:var(--highlight);background:rgba(255,209,102,.08);}
+.timer-badge.danger{border-color:rgba(255,77,109,.5);color:var(--wrong);background:rgba(255,77,109,.08);animation:pulse .7s ease infinite alternate;}
+@keyframes pulse{from{opacity:1;}to{opacity:.5;}}
+.progress-bar{width:100%;height:4px;background:var(--border);border-radius:4px;margin-bottom:26px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.topic-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,209,102,.1);border:1px solid rgba(255,209,102,.25);color:var(--highlight);border-radius:8px;padding:5px 12px;font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.06em;margin-bottom:14px;}
+.question-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px 28px;margin-bottom:16px;animation:fadeUp .35s ease both;}
+.question-text{font-size:.98rem;font-weight:600;line-height:1.65;color:var(--text);}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;animation:fadeUp .35s .08s ease both;}
+@media(max-width:520px){.options-grid{grid-template-columns:1fr;}.question-card{padding:18px;}}
+.option-btn{background:var(--surface);border:1.5px solid var(--border);border-radius:13px;padding:13px 15px;text-align:left;cursor:pointer;font-family:'DM Mono',monospace;font-size:.82rem;color:var(--text);transition:all .18s;display:flex;align-items:flex-start;gap:10px;line-height:1.5;}
+.option-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(124,106,255,.08);transform:translateX(3px);}
+.option-btn:disabled{cursor:default;}
+.option-letter{flex-shrink:0;width:22px;height:22px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.67rem;font-weight:700;color:var(--muted);transition:all .18s;}
+.option-btn:hover:not(:disabled) .option-letter{background:var(--accent);color:#fff;}
+.option-btn.correct{border-color:var(--correct);background:rgba(61,220,132,.08);}
+.option-btn.correct .option-letter{background:var(--correct);color:#0d0f14;}
+.option-btn.wrong{border-color:var(--wrong);background:rgba(255,77,109,.08);}
+.option-btn.wrong .option-letter{background:var(--wrong);color:#fff;}
+.option-btn.dimmed{opacity:.35;}
+.feedback-box{display:none;border-radius:13px;padding:13px 16px;margin-bottom:16px;font-size:.84rem;line-height:1.6;animation:fadeUp .25s ease both;}
+.feedback-box.correct{background:rgba(61,220,132,.08);border:1px solid rgba(61,220,132,.3);color:var(--correct);}
+.feedback-box.wrong{background:rgba(255,77,109,.07);border:1px solid rgba(255,77,109,.3);color:#ff7d93;}
+.feedback-box strong{display:block;margin-bottom:3px;font-size:.9rem;}
+.btn-continue{display:none;width:100%;background:var(--accent);color:#fff;border:none;border-radius:13px;padding:14px;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:all .2s;animation:fadeUp .3s ease both;}
+.btn-continue:hover{opacity:.9;transform:translateY(-1px);}
 
-  #app {
-    width: 100%;
-    max-width: 740px;
-  }
+/* ── TIMEOUT ── */
+#timeout-screen{display:none;text-align:center;padding:40px 0;animation:fadeUp .5s ease both;}
+#timeout-screen h2{font-size:2rem;font-weight:800;margin-bottom:12px;color:var(--wrong);}
+#timeout-screen p{color:var(--muted);margin-bottom:28px;}
 
-  /* ── START SCREEN ── */
-  #start-screen {
-    text-align: center;
-    animation: fadeUp 0.6s ease both;
-  }
+/* ── RESULT ── */
+#result-screen{display:none;text-align:center;animation:fadeUp .6s ease both;}
+.result-circle{width:130px;height:130px;border-radius:50%;background:conic-gradient(var(--accent) calc(var(--pct)*1%),var(--border) 0);display:flex;align-items:center;justify-content:center;margin:0 auto 26px;position:relative;}
+.result-circle::after{content:'';position:absolute;width:102px;height:102px;border-radius:50%;background:var(--bg);}
+.result-pct{font-size:1.7rem;font-weight:800;z-index:1;}
+#result-screen h2{font-size:1.8rem;font-weight:800;margin-bottom:10px;}
+#result-screen>p{color:var(--muted);margin-bottom:10px;font-size:.92rem;}
+.result-stats{display:flex;justify-content:center;gap:12px;margin:22px 0 18px;flex-wrap:wrap;}
+.result-stat{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:15px 22px;min-width:90px;}
+.result-stat .n{font-size:1.75rem;font-weight:800;display:block;}
+.result-stat .l{font-size:.64rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-family:'DM Mono',monospace;}
+.result-stat.c .n{color:var(--correct);}
+.result-stat.w .n{color:var(--wrong);}
 
-  .logo-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(124,106,255,0.12);
-    border: 1px solid rgba(124,106,255,0.3);
-    border-radius: 100px;
-    padding: 6px 16px;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--accent);
-    letter-spacing: 0.08em;
-    margin-bottom: 32px;
-  }
+/* ── BREAKDOWN ── */
+.breakdown{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px 22px;margin:0 0 18px;text-align:left;}
+.breakdown-title{font-size:.67rem;font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.topic-row{margin-bottom:12px;}
+.topic-row:last-child{margin-bottom:0;}
+.topic-row-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.topic-name{font-size:.79rem;font-weight:600;color:var(--text);}
+.topic-fraction{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);}
+.topic-bar-bg{width:100%;height:5px;background:var(--border);border-radius:5px;overflow:hidden;}
+.topic-bar-fill{height:100%;border-radius:5px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.topic-bar-fill.great{background:var(--correct);}
+.topic-bar-fill.ok{background:var(--highlight);}
+.topic-bar-fill.poor{background:var(--wrong);}
+.topic-pct{font-family:'DM Mono',monospace;font-size:.67rem;margin-top:3px;text-align:right;}
+.topic-pct.great{color:var(--correct);}
+.topic-pct.ok{color:var(--highlight);}
+.topic-pct.poor{color:var(--wrong);}
 
-  .logo-badge::before { content: '◉'; font-size: 10px; }
+/* ── WRONG DETAIL ── */
+#wrong-section{text-align:left;margin-bottom:22px;}
+.wrong-topic-header{font-size:.65rem;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);padding:7px 0;border-bottom:1px solid var(--border);margin:14px 0 9px;}
+.wrong-topic-header:first-child{margin-top:0;}
+.wrong-card{display:flex;gap:10px;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--wrong);border-radius:11px;padding:11px 13px;margin-bottom:7px;animation:fadeUp .3s ease both;}
+.wrong-qnum{flex-shrink:0;font-family:'DM Mono',monospace;font-size:.66rem;font-weight:700;color:var(--wrong);padding-top:2px;min-width:26px;}
+.wrong-body{flex:1;min-width:0;}
+.wrong-question{font-size:.8rem;font-weight:600;color:var(--text);margin-bottom:7px;line-height:1.5;}
+.wrong-your{font-size:.73rem;font-family:'DM Mono',monospace;color:var(--wrong);margin-bottom:3px;}
+.wrong-correct{font-size:.73rem;font-family:'DM Mono',monospace;color:var(--correct);}
+.wrong-correct span{font-weight:700;}
 
-  .mpt-title {
-    font-size: clamp(2.8rem, 7vw, 4.8rem);
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    background: linear-gradient(135deg, #ffe066 0%, #ffb347 40%, #ffd166 70%, #fffacd 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 12px;
-    filter: drop-shadow(0 0 32px rgba(255,209,102,0.25));
-  }
+.btn-restart{background:transparent;border:1.5px solid var(--accent);color:var(--accent);border-radius:13px;padding:13px 36px;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:40px;}
+.btn-restart:hover{background:var(--accent);color:#fff;}
+.btn-finish{background:var(--wrong);color:#fff;border:none;border-radius:13px;padding:13px 36px;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-finish:hover{opacity:.85;}
 
-  #start-screen h1 {
-    font-size: clamp(2.2rem, 5vw, 3.4rem);
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 16px;
-    background: linear-gradient(135deg, #e8eaf0 30%, #7c6aff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  #start-screen p {
-    color: var(--muted);
-    font-size: 1rem;
-    margin-bottom: 48px;
-    line-height: 1.7;
-    font-weight: 400;
-  }
-
-  .stats-row {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    margin-bottom: 48px;
-    flex-wrap: wrap;
-  }
-
-  .stat-pill {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 22px;
-    text-align: center;
-  }
-
-  .stat-pill .num {
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: var(--accent);
-    display: block;
-  }
-
-  .stat-pill .label {
-    font-size: 0.72rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .btn-start {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 14px;
-    padding: 16px 48px;
-    font-family: 'Syne', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    letter-spacing: 0.04em;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .btn-start::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(255,255,255,0.1);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  .btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(124,106,255,0.4); }
-  .btn-start:hover::after { opacity: 1; }
-  .btn-start:active { transform: translateY(0); }
-
-  /* ── QUIZ SCREEN ── */
-  #quiz-screen { display: none; }
-
-  .top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 28px;
-  }
-
-  .q-counter {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--muted);
-  }
-
-  .q-counter span { color: var(--text); font-weight: 600; }
-
-  .score-badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.85rem;
-    background: rgba(61,220,132,0.1);
-    border: 1px solid rgba(61,220,132,0.25);
-    color: var(--correct);
-    padding: 5px 14px;
-    border-radius: 100px;
-  }
-
-  .progress-bar {
-    width: 100%;
-    height: 4px;
-    background: var(--border);
-    border-radius: 4px;
-    margin-bottom: 32px;
-    overflow: hidden;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    border-radius: 4px;
-    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .topic-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(255,209,102,0.1);
-    border: 1px solid rgba(255,209,102,0.25);
-    color: var(--highlight);
-    border-radius: 8px;
-    padding: 5px 12px;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-    margin-bottom: 16px;
-  }
-
-  .question-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 28px 32px;
-    margin-bottom: 20px;
-    animation: fadeUp 0.4s ease both;
-  }
-
-  .question-text {
-    font-size: 1.05rem;
-    font-weight: 600;
-    line-height: 1.6;
-    color: var(--text);
-  }
-
-  .options-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 24px;
-    animation: fadeUp 0.4s 0.1s ease both;
-  }
-
-  @media (max-width: 520px) {
-    .options-grid { grid-template-columns: 1fr; }
-    .question-card { padding: 20px; }
-  }
-
-  .option-btn {
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 18px;
-    text-align: left;
-    cursor: pointer;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.88rem;
-    color: var(--text);
-    transition: all 0.18s;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    line-height: 1.5;
-    position: relative;
-  }
-
-  .option-btn:hover:not(:disabled) {
-    border-color: var(--accent);
-    background: rgba(124,106,255,0.08);
-    transform: translateX(3px);
-  }
-
-  .option-btn:disabled { cursor: default; }
-
-  .option-letter {
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    border-radius: 6px;
-    background: var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--muted);
-    transition: all 0.18s;
-  }
-
-  .option-btn:hover:not(:disabled) .option-letter {
-    background: var(--accent);
-    color: #fff;
-  }
-
-  .option-btn.correct {
-    border-color: var(--correct);
-    background: rgba(61,220,132,0.08);
-  }
-
-  .option-btn.correct .option-letter {
-    background: var(--correct);
-    color: #0d0f14;
-  }
-
-  .option-btn.wrong {
-    border-color: var(--wrong);
-    background: rgba(255,77,109,0.08);
-  }
-
-  .option-btn.wrong .option-letter {
-    background: var(--wrong);
-    color: #fff;
-  }
-
-  .option-btn.dimmed {
-    opacity: 0.4;
-  }
-
-  .feedback-box {
-    display: none;
-    border-radius: 14px;
-    padding: 14px 18px;
-    margin-bottom: 20px;
-    font-size: 0.88rem;
-    line-height: 1.6;
-    animation: fadeUp 0.25s ease both;
-  }
-
-  .feedback-box.correct {
-    background: rgba(61,220,132,0.08);
-    border: 1px solid rgba(61,220,132,0.3);
-    color: var(--correct);
-  }
-
-  .feedback-box.wrong {
-    background: rgba(255,77,109,0.07);
-    border: 1px solid rgba(255,77,109,0.3);
-    color: #ff7d93;
-  }
-
-  .feedback-box strong { display: block; margin-bottom: 4px; font-size: 0.95rem; }
-
-  .btn-continue {
-    display: none;
-    width: 100%;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 14px;
-    padding: 15px;
-    font-family: 'Syne', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
-    letter-spacing: 0.04em;
-    transition: all 0.2s;
-    animation: fadeUp 0.3s ease both;
-  }
-
-  .btn-continue:hover { opacity: 0.9; transform: translateY(-1px); }
-
-  /* ── RESULT SCREEN ── */
-  #result-screen {
-    display: none;
-    text-align: center;
-    animation: fadeUp 0.6s ease both;
-  }
-
-  .result-circle {
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    background: conic-gradient(var(--accent) calc(var(--pct) * 1%), var(--border) 0);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 32px;
-    position: relative;
-  }
-
-  .result-circle::after {
-    content: '';
-    position: absolute;
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    background: var(--bg);
-  }
-
-  .result-pct {
-    font-size: 1.8rem;
-    font-weight: 800;
-    z-index: 1;
-  }
-
-  #result-screen h2 {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: 12px;
-  }
-
-  #result-screen p {
-    color: var(--muted);
-    margin-bottom: 12px;
-    font-size: 0.95rem;
-  }
-
-  .result-stats {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    margin: 32px 0;
-    flex-wrap: wrap;
-  }
-
-  .result-stat {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 18px 28px;
-    min-width: 110px;
-  }
-
-  .result-stat .n {
-    font-size: 2rem;
-    font-weight: 800;
-    display: block;
-  }
-
-  .result-stat .l {
-    font-size: 0.7rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .result-stat.c .n { color: var(--correct); }
-  .result-stat.w .n { color: var(--wrong); }
-
-  .btn-restart {
-    background: transparent;
-    border: 1.5px solid var(--accent);
-    color: var(--accent);
-    border-radius: 14px;
-    padding: 14px 40px;
-    font-family: 'Syne', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .btn-restart:hover { background: var(--accent); color: #fff; }
-
-  /* ── TOPIC BREAKDOWN ── */
-  .breakdown {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 22px 24px;
-    margin: 0 0 28px;
-    text-align: left;
-  }
-  .breakdown-title {
-    font-size: 0.72rem;
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 16px;
-  }
-  .topic-row { margin-bottom: 14px; }
-  .topic-row:last-child { margin-bottom: 0; }
-  .topic-row-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
-  }
-  .topic-name { font-size: 0.82rem; font-weight: 600; color: var(--text); }
-  .topic-fraction { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--muted); }
-  .topic-bar-bg { width: 100%; height: 6px; background: var(--border); border-radius: 6px; overflow: hidden; }
-  .topic-bar-fill { height: 100%; border-radius: 6px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
-  .topic-bar-fill.great { background: var(--correct); }
-  .topic-bar-fill.ok    { background: var(--highlight); }
-  .topic-bar-fill.poor  { background: var(--wrong); }
-  .topic-pct { font-family: 'DM Mono', monospace; font-size: 0.72rem; margin-top: 4px; text-align: right; }
-  .topic-pct.great { color: var(--correct); }
-  .topic-pct.ok    { color: var(--highlight); }
-  .topic-pct.poor  { color: var(--wrong); }
-
-  /* ── WRONG DETAIL ── */
-  #wrong-section {
-    text-align: left;
-    margin-bottom: 28px;
-  }
-  .wrong-topic-header {
-    font-size: 0.7rem;
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    padding: 8px 0 8px;
-    border-bottom: 1px solid var(--border);
-    margin: 16px 0 10px;
-  }
-  .wrong-topic-header:first-child { margin-top: 0; }
-  .wrong-card {
-    display: flex;
-    gap: 12px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--wrong);
-    border-radius: 12px;
-    padding: 12px 14px;
-    margin-bottom: 8px;
-    animation: fadeUp 0.3s ease both;
-  }
-  .wrong-qnum {
-    flex-shrink: 0;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--wrong);
-    padding-top: 2px;
-    min-width: 28px;
-  }
-  .wrong-body { flex: 1; min-width: 0; }
-  .wrong-question {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 8px;
-    line-height: 1.5;
-  }
-  .wrong-your {
-    font-size: 0.78rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--wrong);
-    margin-bottom: 4px;
-  }
-  .wrong-your span { opacity: 0.85; }
-  .wrong-correct {
-    font-size: 0.78rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--correct);
-  }
-  .wrong-correct span { font-weight: 600; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
 </style>
 </head>
 <body>
 <div id="app">
 
-  <!-- START -->
-  <div id="start-screen">
-    <div class="mpt-title">MPT Quiz</div>
-    <div class="logo-badge">PHONETICS · IPA</div>
-    <h1>English Consonants<br>Quiz</h1>
-    <p>Test your knowledge of English consonant classification —<br>place, manner, voicing & more. 50 randomized questions.</p>
-    <div class="stats-row">
-      <div class="stat-pill"><span class="num">50</span><span class="label">Questions</span></div>
-      <div class="stat-pill"><span class="num">24</span><span class="label">Consonants</span></div>
-      <div class="stat-pill"><span class="num">4</span><span class="label">Topics</span></div>
-    </div>
-    <button class="btn-start" onclick="startQuiz()">Start Quiz →</button>
+<!-- ── START ── -->
+<div id="start-screen">
+  <div class="mpt-title">MPT Quiz</div>
+  <div class="logo-badge">PHONETICS &amp; PHONOLOGY</div>
+  <h1>English Phonetics<br>Practice Test</h1>
+  <p>Bộ ngân hàng <strong>150 câu</strong> — 5 chương. Mỗi lần thi <strong>30 câu ngẫu nhiên</strong>, thời gian <strong>20 phút</strong>.</p>
+  <div class="stats-row">
+    <div class="stat-pill"><span class="num">150</span><span class="label">Câu hỏi</span></div>
+    <div class="stat-pill"><span class="num">30</span><span class="label">Mỗi lần thi</span></div>
+    <div class="stat-pill"><span class="num">20'</span><span class="label">Thời gian</span></div>
+    <div class="stat-pill"><span class="num">5</span><span class="label">Chương</span></div>
   </div>
+  <div class="filter-label">Lọc chương thi (tuỳ chọn):</div>
+  <div class="chapter-filter" id="chapter-filter">
+    <button class="ch-btn all-btn" onclick="toggleAll()">Tất cả</button>
+    <button class="ch-btn active" data-ch="Chapter 1" onclick="toggleCh(this)">Ch.1 – Phonetics &amp; Phonology</button>
+    <button class="ch-btn active" data-ch="Chapter 2" onclick="toggleCh(this)">Ch.2 – English Vowels</button>
+    <button class="ch-btn active" data-ch="Chapter 3" onclick="toggleCh(this)">Ch.3 – English Consonants</button>
+    <button class="ch-btn active" data-ch="Chapter 4" onclick="toggleCh(this)">Ch.4 – Phonemes &amp; Allophones</button>
+    <button class="ch-btn active" data-ch="Chapter 5" onclick="toggleCh(this)">Ch.5 – Stress in English</button>
+  </div>
+  <button class="btn-start" onclick="startQuiz()">Bắt đầu thi →</button>
+</div>
 
-  <!-- QUIZ -->
-  <div id="quiz-screen">
-    <div class="top-bar">
-      <div class="q-counter">Question <span id="q-num">1</span> / 50</div>
-      <div class="score-badge" id="score-display">✓ 0</div>
-    </div>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-    <div class="topic-tag" id="topic-tag">Topic</div>
-    <div class="question-card"><div class="question-text" id="question-text"></div></div>
-    <div class="options-grid" id="options-grid"></div>
-    <div class="feedback-box" id="feedback-box"></div>
-    <button class="btn-continue" id="btn-continue" onclick="nextQuestion()">Continue →</button>
+<!-- ── QUIZ ── -->
+<div id="quiz-screen">
+  <div class="top-bar">
+    <div class="q-counter">Câu <span id="q-num">1</span> / 30</div>
+    <div class="score-badge" id="score-display">✓ 0</div>
+    <div class="timer-badge" id="timer-badge">20:00</div>
   </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div class="topic-tag" id="topic-tag">Chapter</div>
+  <div class="question-card"><div class="question-text" id="question-text"></div></div>
+  <div class="options-grid" id="options-grid"></div>
+  <div class="feedback-box" id="feedback-box"></div>
+  <button class="btn-continue" id="btn-continue" onclick="nextQuestion()">Tiếp theo →</button>
+</div>
 
-  <!-- RESULT -->
-  <div id="result-screen">
-    <div class="result-circle" id="result-circle" style="--pct:0">
-      <div class="result-pct" id="result-pct">0%</div>
-    </div>
-    <h2 id="result-title">Well done!</h2>
-    <p id="result-msg"></p>
-    <div class="result-stats">
-      <div class="result-stat c"><span class="n" id="r-correct">0</span><span class="l">Correct</span></div>
-      <div class="result-stat w"><span class="n" id="r-wrong">0</span><span class="l">Wrong</span></div>
-      <div class="result-stat"><span class="n" id="r-pct">0%</span><span class="l">Score</span></div>
-    </div>
-    <div class="breakdown">
-      <div class="breakdown-title">📊 Performance by Topic</div>
-      <div id="topic-breakdown"></div>
-    </div>
-    <div id="wrong-section">
-      <div class="breakdown-title" style="margin-bottom:12px;">❌ Câu trả lời sai</div>
-      <div id="wrong-list"></div>
-    </div>
-    <button class="btn-restart" onclick="restartQuiz()">Try Again</button>
+<!-- ── TIMEOUT ── -->
+<div id="timeout-screen">
+  <h2>⏰ Hết giờ!</h2>
+  <p>Đã hết 20 phút. Xem kết quả các câu đã làm bên dưới.</p>
+  <button class="btn-finish" onclick="finishAndShow()">Xem kết quả →</button>
+</div>
+
+<!-- ── RESULT ── -->
+<div id="result-screen">
+  <div class="result-circle" id="result-circle" style="--pct:0">
+    <div class="result-pct" id="result-pct">0%</div>
   </div>
+  <h2 id="result-title"></h2>
+  <p id="result-msg"></p>
+  <div class="result-stats">
+    <div class="result-stat c"><span class="n" id="r-correct">0</span><span class="l">Đúng</span></div>
+    <div class="result-stat w"><span class="n" id="r-wrong">0</span><span class="l">Sai</span></div>
+    <div class="result-stat"><span class="n" id="r-pct">0%</span><span class="l">Điểm</span></div>
+  </div>
+  <div class="breakdown">
+    <div class="breakdown-title">📊 Kết quả theo chương</div>
+    <div id="topic-breakdown"></div>
+  </div>
+  <div id="wrong-section" style="display:none;">
+    <div class="breakdown-title" style="margin-bottom:10px;">❌ Chi tiết câu sai</div>
+    <div id="wrong-list"></div>
+  </div>
+  <button class="btn-restart" onclick="restartQuiz()">Thi lại</button>
+</div>
 
 </div>
 
 <script>
+// ═══════════════════════════════════════════════
+// QUESTION BANK – 150 câu (30 per chapter)
+// ═══════════════════════════════════════════════
 const ALL_QUESTIONS = [
-  // ── PLACE OF ARTICULATION (18 câu) ──
-  {
-    topic: "Place of Articulation",
-    q: "Which sound is classified as a BILABIAL?",
-    correct: "/m/",
-    wrong: ["/n/", "/ŋ/", "/v/"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "Which of these is a LABIO-DENTAL consonant?",
-    correct: "/f/",
-    wrong: ["/θ/", "/s/", "/p/"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "/θ/ and /ð/ are classified as which place of articulation?",
-    correct: "Dentals",
-    wrong: ["Alveolars", "Bilabials", "Velars"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "Which sound is an ALVEOLAR?",
-    correct: "/n/",
-    wrong: ["/m/", "/ŋ/", "/ʒ/"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "Where is /r/ articulated?",
-    correct: "Retroflex — tongue tip curled toward post-alveolar region",
-    wrong: ["Alveolar — tip touches alveolar ridge", "Palatal — tongue touches hard palate", "Velar — back tongue touches soft palate"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "Which sounds are VELARS?",
-    correct: "/k/, /g/, /ŋ/",
-    wrong: ["/t/, /d/, /n/", "/p/, /b/, /m/", "/ʃ/, /ʒ/, /tʃ/"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "/ʃ/ and /tʃ/ belong to which place of articulation?",
-    correct: "Palato-alveolar (post-alveolar)",
-    wrong: ["Alveolar", "Palatal", "Velar"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "Which sound is classified as PALATAL?",
-    correct: "/j/",
-    wrong: ["/w/", "/r/", "/l/"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "/h/ is produced at which place of articulation?",
-    correct: "Glottal",
-    wrong: ["Velar", "Palatal", "Alveolar"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "Which pair are both BILABIALS?",
-    correct: "/b/ and /p/",
-    wrong: ["/b/ and /v/", "/p/ and /f/", "/m/ and /n/"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "What is the place of articulation for /v/?",
-    correct: "Labio-dental",
-    wrong: ["Bilabial", "Dental", "Alveolar"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "Which sound is NOT an alveolar?",
-    correct: "/ʒ/",
-    wrong: ["/s/", "/z/", "/l/"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "The sound /w/ is classified as which place of articulation?",
-    correct: "Bilabial",
-    wrong: ["Velar", "Labio-dental", "Palatal"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "Which sound involves the BACK of the tongue touching the soft palate?",
-    correct: "/g/",
-    wrong: ["/d/", "/b/", "/ð/"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "How many alveolar consonants are there in English?",
-    correct: "6 — /t/, /d/, /s/, /z/, /l/, /n/",
-    wrong: ["4 — /t/, /d/, /s/, /z/", "5 — /t/, /d/, /s/, /z/, /n/", "7 — /t/, /d/, /s/, /z/, /l/, /n/, /r/"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "Which place of articulation involves the LOWER LIP pressed against the UPPER TEETH?",
-    correct: "Labio-dental",
-    wrong: ["Bilabial", "Dental", "Alveolar"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "Which sound is produced with the TIP OF THE TONGUE between upper and lower teeth?",
-    correct: "/ð/",
-    wrong: ["/z/", "/v/", "/dʒ/"]
-  },
-  {
-    topic: "Place of Articulation",
-    q: "Which of these groups contains ONLY palato-alveolar sounds?",
-    correct: "/ʃ/, /ʒ/, /tʃ/, /dʒ/",
-    wrong: ["/ʃ/, /ʒ/, /s/, /z/", "/tʃ/, /dʒ/, /t/, /d/", "/ʃ/, /tʃ/, /j/, /dʒ/"]
-  },
 
-  // ── MANNER OF ARTICULATION (16 câu) ──
-  {
-    topic: "Manner of Articulation",
-    q: "Which group contains ONLY plosives?",
-    correct: "/p/, /b/, /t/, /d/, /k/, /g/",
-    wrong: ["/p/, /b/, /t/, /d/, /s/, /z/", "/p/, /b/, /f/, /v/, /k/, /g/", "/t/, /d/, /tʃ/, /dʒ/, /k/, /g/"]
-  },
-  {
-    topic: "Manner of Articulation",
-    q: "/tʃ/ and /dʒ/ are classified as which manner of articulation?",
-    correct: "Affricates",
-    wrong: ["Fricatives", "Plosives", "Approximants"]
-  },
-  {
-    topic: "Manner of Articulation",
-    q: "Which sound is a NASAL?",
-    correct: "/ŋ/",
-    wrong: ["/g/", "/k/", "/l/"]
-  },
-  {
-    topic: "Manner of Articulation",
-    q: "What is the manner of articulation of /l/?",
-    correct: "Lateral — air passes at both sides of tongue",
-    wrong: ["Nasal — air passes through the nose", "Fricative — airstream is constricted", "Approximant — tongue approaches alveolar ridge"]
-  },
-  {
-    topic: "Manner of Articulation",
-    q: "Which group contains ONLY fricatives?",
-    correct: "/f/, /v/, /s/, /z/, /ʃ/, /ʒ/, /θ/, /ð/, /h/",
-    wrong: ["/f/, /v/, /s/, /z/, /ʃ/, /ʒ/, /tʃ/, /dʒ/", "/f/, /v/, /s/, /z/, /θ/, /ð/, /tʃ/, /h/", "/s/, /z/, /ʃ/, /ʒ/, /θ/, /ð/, /h/, /l/"]
-  },
-  {
-    topic: "Manner of Articulation",
-    q: "What is the manner of articulation of /w/ and /j/?",
-    correct: "Approximants (Glides)",
-    wrong: ["Fricatives", "Nasals", "Laterals"]
-  },
-  {
-    topic: "Manner of Articulation",
-    q: "How does a PLOSIVE differ from an AFFRICATE?",
-    correct: "Plosives release the airstream explosively; affricates release it slowly with friction",
-    wrong: ["Plosives use friction; affricates stop airflow completely", "Plosives pass air through nose; affricates pass it through mouth", "Plosives are voiced; affricates are voiceless"]
-  },
-  {
-    topic: "Manner of Articulation",
-    q: "Which consonant is the LATERAL approximant?",
-    correct: "/l/",
-    wrong: ["/r/", "/w/", "/j/"]
-  },
-  {
-    topic: "Manner of Articulation",
-    q: "What is the manner of articulation for /m/, /n/, and /ŋ/?",
-    correct: "Nasals",
-    wrong: ["Plosives", "Fricatives", "Approximants"]
-  },
-  {
-    topic: "Manner of Articulation",
-    q: "Which sound is NOT a fricative?",
-    correct: "/dʒ/",
-    wrong: ["/ʒ/", "/θ/", "/h/"]
-  },
-  {
-    topic: "Manner of Articulation",
-    q: "/r/ is best described as which manner?",
-    correct: "Approximant — tongue approaches but doesn't fully touch",
-    wrong: ["Fricative — produces friction", "Lateral — air escapes at sides", "Plosive — air is fully stopped"]
-  },
-  {
-    topic: "Manner of Articulation",
-    q: "Which set contains ONLY affricates?",
-    correct: "/tʃ/ and /dʒ/",
-    wrong: ["/tʃ/ and /ʃ/", "/dʒ/ and /ʒ/", "/tʃ/ and /s/"]
-  },
-  {
-    topic: "Manner of Articulation",
-    q: "How many fricatives are there in English consonants?",
-    correct: "9",
-    wrong: ["7", "8", "6"]
-  },
-  {
-    topic: "Manner of Articulation",
-    q: "What makes /h/ different from other fricatives?",
-    correct: "It is produced by rapid closing of the glottis, not constricting the oral tract",
-    wrong: ["It is voiced while others are voiceless", "It is a nasal fricative", "It is the only dental fricative"]
-  },
-  {
-    topic: "Manner of Articulation",
-    q: "In an AFFRICATE, the airstream is first...",
-    correct: "Stopped completely, then released slowly with friction",
-    wrong: ["Constricted throughout to create friction", "Released with an explosion, then stopped", "Passed through the nose"]
-  },
-  {
-    topic: "Manner of Articulation",
-    q: "Which manner of articulation describes /n/: air passes through the nose while the mouth is CLOSED?",
-    correct: "Nasal",
-    wrong: ["Lateral", "Approximant", "Plosive"]
-  },
+/* ─────────── CHAPTER 1 (30) ─────────── */
+{topic:"Chapter 1",q:"Which branch of linguistics studies how sounds function within a language system?",correct:"Phonology",wrong:["Phonetics","Lexicology","Morphology"]},
+{topic:"Chapter 1",q:"What is the main difference between /s/ and /z/?",correct:"/s/ is voiceless while /z/ is voiced",wrong:["/s/ is bilabial while /z/ is dental","/s/ is nasal but /z/ is oral","/s/ is a vowel while /z/ is a consonant"]},
+{topic:"Chapter 1",q:"When the vocal cords are apart and not vibrating, the sound produced is:",correct:"Voiceless",wrong:["Fricative","Nasal","Voiced"]},
+{topic:"Chapter 1",q:"Which articulator is mainly responsible for producing bilabial sounds?",correct:"Two lips",wrong:["Tongue and teeth","Tongue and palate","Teeth and lips"]},
+{topic:"Chapter 1",q:"Which example best illustrates the difference between a letter and a sound in English?",correct:"The word 'cat' has three letters and three sounds",wrong:["The word 'cat' has three letters but two sounds","The word 'cat' has three letters but four sounds","The word 'cat' has three letters and one sound"]},
+{topic:"Chapter 1",q:"Which of the following belongs to phonology rather than phonetics?",correct:"Explaining how sounds distinguish meaning",wrong:["Measuring sound waves","Studying vocal cord vibration","Describing tongue position"]},
+{topic:"Chapter 1",q:"Which pair demonstrates the difference between voiced and voiceless sounds?",correct:"/p/ – /b/",wrong:["/l/ – /r/","/w/ – /j/","/m/ – /n/"]},
+{topic:"Chapter 1",q:"Which organ can raise or lower to control airflow to the nasal cavity?",correct:"Soft palate (velum)",wrong:["Teeth","Tongue","Lips"]},
+{topic:"Chapter 1",q:"Which organ contains the vocal cords?",correct:"Larynx",wrong:["Nasal cavity","Oral cavity","Pharynx"]},
+{topic:"Chapter 1",q:"Which organ is the most flexible articulator in speech production?",correct:"Tongue",wrong:["Teeth","Nose","Jaw"]},
+{topic:"Chapter 1",q:"Which organ of speech vibrates to produce voiced sounds?",correct:"Vocal cords",wrong:["Lips","Teeth","Tongue"]},
+{topic:"Chapter 1",q:"Which part of the mouth is located behind the upper front teeth?",correct:"Alveolar ridge",wrong:["Uvula","Soft palate","Hard palate"]},
+{topic:"Chapter 1",q:"Which statement best describes voiceless sounds?",correct:"The vocal cords do not vibrate",wrong:["The vocal cords vibrate strongly","The airflow stops completely","The tongue does not move"]},
+{topic:"Chapter 1",q:"Which statement best explains the role of the larynx in speech?",correct:"It produces voicing through the vocal cords",wrong:["It shapes vowel sounds in speech","It controls the movement of the lips","It regulates the flow of air in speech"]},
+{topic:"Chapter 1",q:"Which statement correctly distinguishes phonetics and phonology?",correct:"Phonetics studies speech sounds physically while phonology studies sound patterns",wrong:["Phonetics studies spelling while phonology studies vocabulary","Phonetics studies sentences while phonology studies discourse","Phonetics focuses on meaning while phonology focuses on grammar"]},
+{topic:"Chapter 1",q:"Which word shows that letters and sounds are not always the same in English?",correct:"knife",wrong:["dog","pen","map"]},
+{topic:"Chapter 1",q:"When producing the sound /b/, what happens to the vocal cords?",correct:"They are closed and vibrate",wrong:["They stop airflow completely","They remain open and do not vibrate","They close the nasal cavity"]},
+{topic:"Chapter 1",q:"Which branch of phonetics studies the physical properties of speech sound transmission through the air?",correct:"Acoustic phonetics",wrong:["Auditory phonetics","Articulatory phonetics","Applied phonetics"]},
+{topic:"Chapter 1",q:"Which branch of phonetics studies how speech sounds are received and perceived by listeners?",correct:"Auditory phonetics",wrong:["Acoustic phonetics","Articulatory phonetics","Phonology"]},
+{topic:"Chapter 1",q:"What do phoneticians use to measure the pitch and loudness of speech sounds?",correct:"Waveforms and spectrograms",wrong:["Alphabets and transcription","IPA charts and dictionaries","Oscillators and amplifiers"]},
+{topic:"Chapter 1",q:"In a spectrogram, what does a darker signal indicate?",correct:"The sound is louder",wrong:["The sound is shorter","The sound is voiceless","The sound is a vowel"]},
+{topic:"Chapter 1",q:"Which of the following is an ACTIVE articulator?",correct:"Tongue",wrong:["Hard palate","Alveolar ridge","Upper teeth"]},
+{topic:"Chapter 1",q:"Which of the following is a PASSIVE articulator?",correct:"Hard palate",wrong:["Lower jaw","Tongue","Soft palate"]},
+{topic:"Chapter 1",q:"The term 'Fortis' in phonetics refers to:",correct:"Strong force of articulation in voiceless sounds",wrong:["Weak force of articulation in voiced sounds","Nasal resonance in vowels","Aspiration in fricatives"]},
+{topic:"Chapter 1",q:"The term 'Lenis' in phonetics refers to:",correct:"Weak force of articulation in voiced sounds",wrong:["Strong force of articulation in voiceless sounds","Nasal resonance","Aspiration in stops"]},
+{topic:"Chapter 1",q:"Which part of the tongue is closest to the lips?",correct:"Tip",wrong:["Blade","Front","Root"]},
+{topic:"Chapter 1",q:"Which organ of speech mainly determines the place of articulation for many consonants?",correct:"Tongue",wrong:["Jaw","Nose","Vocal cords"]},
+{topic:"Chapter 1",q:"Which statement correctly describes voiced sounds?",correct:"The vocal cords vibrate during production",wrong:["Air passes only through the nose","The tongue touches the teeth","The lips close tightly"]},
+{topic:"Chapter 1",q:"For many linguists, phonetics belongs to which type of linguistics?",correct:"Descriptive linguistics",wrong:["Theoretical linguistics","Applied linguistics","Historical linguistics"]},
+{topic:"Chapter 1",q:"Articulatory phonetics deals with:",correct:"The way speech sounds are produced and which speech organs move",wrong:["The physical transmission of sound waves through air","The reception and perception of speech sounds by listeners","The distribution and patterning of sounds in a language"]},
 
-  // ── VOICING (10 câu) ──
-  {
-    topic: "Voicing",
-    q: "Which sound is VOICELESS?",
-    correct: "/ʃ/",
-    wrong: ["/ʒ/", "/v/", "/z/"]
-  },
-  {
-    topic: "Voicing",
-    q: "Which sound is VOICED?",
-    correct: "/ð/",
-    wrong: ["/θ/", "/f/", "/s/"]
-  },
-  {
-    topic: "Voicing",
-    q: "How many VOICELESS consonants are there in English?",
-    correct: "9",
-    wrong: ["7", "11", "8"]
-  },
-  {
-    topic: "Voicing",
-    q: "What does 'Fortis' mean in the context of voiceless sounds?",
-    correct: "Strong force of articulation",
-    wrong: ["Weak force of articulation", "Vocal cords vibrate strongly", "Airstream passes through nose"]
-  },
-  {
-    topic: "Voicing",
-    q: "All nasals (/m/, /n/, /ŋ/) are...",
-    correct: "Voiced",
-    wrong: ["Voiceless", "Some voiced, some voiceless", "Neither voiced nor voiceless"]
-  },
-  {
-    topic: "Voicing",
-    q: "Which of these is a VOICELESS sound?",
-    correct: "/tʃ/",
-    wrong: ["/dʒ/", "/ð/", "/ŋ/"]
-  },
-  {
-    topic: "Voicing",
-    q: "What physical feature characterizes a VOICED consonant?",
-    correct: "Narrow gap between vocal cords — they vibrate",
-    wrong: ["Wide gap between vocal cords — no vibration", "Air is blocked in the nose", "Strong force of articulation (Fortis)"]
-  },
-  {
-    topic: "Voicing",
-    q: "Which set contains ONLY voiced consonants?",
-    correct: "/b/, /d/, /g/, /v/, /z/",
-    wrong: ["/b/, /d/, /g/, /p/, /z/", "/v/, /f/, /z/, /s/, /ð/", "/b/, /d/, /g/, /k/, /ŋ/"]
-  },
-  {
-    topic: "Voicing",
-    q: "Which set contains ONLY voiceless consonants?",
-    correct: "/p/, /t/, /k/, /f/, /s/, /ʃ/, /θ/, /tʃ/, /h/",
-    wrong: ["/p/, /t/, /k/, /f/, /s/, /ʃ/, /θ/, /tʃ/, /ð/", "/p/, /t/, /k/, /f/, /s/, /ʃ/, /tʃ/, /dʒ/, /h/", "/p/, /t/, /k/, /f/, /s/, /θ/, /tʃ/, /h/, /z/"]
-  },
-  {
-    topic: "Voicing",
-    q: "What term describes the weak articulation force of voiced consonants?",
-    correct: "Lenis",
-    wrong: ["Fortis", "Aspirate", "Nasal"]
-  },
+/* ─────────── CHAPTER 2 (30) ─────────── */
+{topic:"Chapter 2",q:"A student says 'I sit on the sheep' instead of 'I sit on the ship.' Which vowel contrast causes the misunderstanding?",correct:"/ɪ/ – /iː/",wrong:["/æ/ – /ʌ/","/e/ – /ɜː/","/ʊ/ – /uː/"]},
+{topic:"Chapter 2",q:"Choose the word that contains the back vowel.",correct:"cot",wrong:["cat","cut","coat"]},
+{topic:"Chapter 2",q:"Choose the word that contains the central vowel.",correct:"sun",wrong:["soon","seen","saw"]},
+{topic:"Chapter 2",q:"Choose the word that contains the diphthong.",correct:"ride",wrong:["read","rude","rod"]},
+{topic:"Chapter 2",q:"Choose the word that contains the long back vowel.",correct:"walk",wrong:["work","wake","weak"]},
+{topic:"Chapter 2",q:"Choose the word that contains the long central vowel.",correct:"bird",wrong:["board","bread","beard"]},
+{topic:"Chapter 2",q:"Choose the word that contains the long front vowel. 'She can see the ___ clearly.'",correct:"sheep",wrong:["ship","shop","shape"]},
+{topic:"Chapter 2",q:"Choose the word that contains the low spread vowel.",correct:"pan",wrong:["pun","pen","pin"]},
+{topic:"Chapter 2",q:"Choose the word that contains the mid front vowel.",correct:"bed",wrong:["bud","bad","bid"]},
+{topic:"Chapter 2",q:"Choose the word that contains the short front vowel. 'The ___ is sailing across the sea.'",correct:"ship",wrong:["sheep","shop","shape"]},
+{topic:"Chapter 2",q:"Choose the word that contains the short vowel.",correct:"book",wrong:["boat","beat","boot"]},
+{topic:"Chapter 2",q:"If a speaker pronounces 'luck' like 'lock', which vowel contrast is confused?",correct:"/ʌ/ – /ɒ/",wrong:["/e/ – /æ/","/ɪ/ – /iː/","/ʊ/ – /uː/"]},
+{topic:"Chapter 2",q:"In the word 'cup' /kʌp/, the vowel /ʌ/ is characterized by:",correct:"A low central tongue position with neutral lips",wrong:["A high back tongue position with rounded lips","A mid front tongue position","A high front tongue position"]},
+{topic:"Chapter 2",q:"In the word 'food' /fuːd/, the vowel /uː/ is articulated with:",correct:"A high back tongue position and rounded lips",wrong:["A low front tongue and spread lips","A mid central tongue and neutral lips","A low back tongue and rounded lips"]},
+{topic:"Chapter 2",q:"Which pair of words demonstrates the contrast /ɪ/ – /iː/ in communication?",correct:"ship – sheep",wrong:["man – men","cap – cup","full – fool"]},
+{topic:"Chapter 2",q:"How many short vowels are there in English?",correct:"7",wrong:["5","8","6"]},
+{topic:"Chapter 2",q:"How many long vowels are there in English?",correct:"5",wrong:["6","4","7"]},
+{topic:"Chapter 2",q:"Which of the following is a CENTERING diphthong?",correct:"/ɪə/",wrong:["/aɪ/","/eɪ/","/əʊ/"]},
+{topic:"Chapter 2",q:"Which of the following is a CLOSING diphthong?",correct:"/aʊ/",wrong:["/ɪə/","/eə/","/ʊə/"]},
+{topic:"Chapter 2",q:"How many diphthongs are there in English?",correct:"8",wrong:["5","6","10"]},
+{topic:"Chapter 2",q:"A triphthong is formed by:",correct:"A closing diphthong + /ə/",wrong:["Two vowels side by side","A vowel + a consonant + /ə/","A consonant cluster + a vowel"]},
+{topic:"Chapter 2",q:"How many triphthongs are there in English?",correct:"5",wrong:["3","6","8"]},
+{topic:"Chapter 2",q:"Which vowels are described as HIGH vowels (mouth mostly closed)?",correct:"/ɪ/, /iː/, /uː/, /ʊ/",wrong:["/æ/, /ʌ/, /ɑː/, /ɒ/","/e/, /ə/, /ɜː/, /ɔː/","/ə/, /ɜː/, /ʌ/"]},
+{topic:"Chapter 2",q:"Which vowels are classified as FRONT vowels?",correct:"/ɪ/, /iː/, /æ/, /e/",wrong:["/uː/, /ʊ/, /ɒ/, /ɔː/","/ə/, /ɜː/, /ʌ/","/ɑː/, /ɔː/, /uː/"]},
+{topic:"Chapter 2",q:"Which vowels have ROUNDED lips?",correct:"/uː/, /ʊ/, /ɒ/, /ɔː/, /ɑː/",wrong:["/ɪ/, /iː/, /æ/, /e/","/ə/, /ɜː/, /ʌ/","/aɪ/, /ɔɪ/, /eɪ/"]},
+{topic:"Chapter 2",q:"The schwa sound /ə/ is classified as:",correct:"Short central mid vowel",wrong:["Long front high vowel","Short back low vowel","Long back rounded vowel"]},
+{topic:"Chapter 2",q:"In which context are vowels shortened?",correct:"Before voiceless consonants",wrong:["Before voiced consonants","At the end of words","In open syllables"]},
+{topic:"Chapter 2",q:"In the mnemonic 'No highway here – cowboy', which diphthong does 'highway' represent?",correct:"/aɪ/",wrong:["/əʊ/","/eɪ/","/aʊ/"]},
+{topic:"Chapter 2",q:"Which pair contrasts a BACK vowel with a CENTRAL vowel?",correct:"/uː/ vs /ʌ/",wrong:["/iː/ vs /e/","/æ/ vs /ɒ/","/ɪ/ vs /ə/"]},
+{topic:"Chapter 2",q:"Vowels are sounds in which there is:",correct:"No obstruction of airflow and continual vibration of vocal cords",wrong:["Complete closure of the vocal tract","Partial closure causing friction","Air passing through the nose only"]},
 
-  // ── POSITION OF SOFT PALATE (6 câu) ──
-  {
-    topic: "Position of Soft Palate",
-    q: "When the soft palate is LOWERED, which type of sounds are produced?",
-    correct: "Nasals — air exits through the nose",
-    wrong: ["Orals — air exits through the mouth", "Fricatives — air is constricted", "Plosives — air is stopped"]
-  },
-  {
-    topic: "Position of Soft Palate",
-    q: "Which sounds are NASAL consonants in English?",
-    correct: "/m/, /n/, /ŋ/",
-    wrong: ["/m/, /n/, /l/", "/m/, /ŋ/, /w/", "/n/, /ŋ/, /r/"]
-  },
-  {
-    topic: "Position of Soft Palate",
-    q: "For ORAL consonants, how is the soft palate positioned?",
-    correct: "Raised — closing the nasal passage, air exits through mouth",
-    wrong: ["Lowered — opening the nasal passage", "Neutral — both nasal and oral passages open", "It does not move for oral consonants"]
-  },
-  {
-    topic: "Position of Soft Palate",
-    q: "Which nasal is a VELAR (back of tongue touches soft palate)?",
-    correct: "/ŋ/",
-    wrong: ["/m/", "/n/", "/l/"]
-  },
-  {
-    topic: "Position of Soft Palate",
-    q: "Is /l/ nasal or oral?",
-    correct: "Oral — soft palate is raised",
-    wrong: ["Nasal — soft palate is lowered", "It alternates depending on context", "It is produced with mixed nasal/oral airflow"]
-  },
-  {
-    topic: "Position of Soft Palate",
-    q: "Which consonant is BOTH oral AND lateral (air exits at sides of tongue)?",
-    correct: "/l/",
-    wrong: ["/n/", "/r/", "/m/"]
-  },
-];
+/* ─────────── CHAPTER 3 (30) ─────────── */
+{topic:"Chapter 3",q:"In the pair 'ship' and 'sip', the difference between the initial consonants mainly lies in:",correct:"Place of articulation",wrong:["Syllable structure","State of vocal cords","Vowel length"]},
+{topic:"Chapter 3",q:"Which articulator usually moves the most during consonant production?",correct:"The tongue",wrong:["The throat","The nose","The jaw"]},
+{topic:"Chapter 3",q:"Which pair of consonants shares the same manner (fricative) but differs mainly in voicing?",correct:"/f/ – /v/",wrong:["/k/ – /g/","/p/ – /b/","/t/ – /d/"]},
+{topic:"Chapter 3",q:"Which pair of words illustrates the contrast between the dental fricative and the alveolar fricative?",correct:"thin – sin",wrong:["bat – pat","fan – van","cap – gap"]},
+{topic:"Chapter 3",q:"Which pair of words shows the contrast between /ʃ/ and /tʃ/?",correct:"ship – chip",wrong:["church – search","shank – chemist","Christ – ship"]},
+{topic:"Chapter 3",q:"Which part of the mouth is involved in producing alveolar consonants?",correct:"The alveolar ridge",wrong:["The soft palate","The lower teeth","The uvula"]},
+{topic:"Chapter 3",q:"Which speech organ mainly vibrates to produce voiced consonants?",correct:"The vocal cords",wrong:["The lips","The teeth","The tongue"]},
+{topic:"Chapter 3",q:"Which word begins with a consonant cluster?",correct:"click",wrong:["wrick","knickers","psalm"]},
+{topic:"Chapter 3",q:"Which word begins with a glottal fricative?",correct:"honey",wrong:["hour","honest","know"]},
+{topic:"Chapter 3",q:"Which word begins with an approximant?",correct:"right",wrong:["light","sight","night"]},
+{topic:"Chapter 3",q:"Which word begins with a voiced alveolar stop?",correct:"door",wrong:["coor","toor","poor"]},
+{topic:"Chapter 3",q:"Which word begins with a voiced bilabial stop?",correct:"break",wrong:["freak","preak","trek"]},
+{topic:"Chapter 3",q:"Which word begins with a voiceless alveolar fricative?",correct:"sock",wrong:["lock","shock","rock"]},
+{topic:"Chapter 3",q:"Which word begins with a voiceless labio-dental fricative?",correct:"pharmacy",wrong:["sarmacy","barmacy","tarmacy"]},
+{topic:"Chapter 3",q:"Which word contains a voiceless post-alveolar fricative?",correct:"ship",wrong:["sip","tip","dip"]},
+{topic:"Chapter 3",q:"Which word contains a voiceless velar plosive?",correct:"cat",wrong:["gat","tat","bat"]},
+{topic:"Chapter 3",q:"Which word contains an affricate consonant?",correct:"chair",wrong:["share","pair","care"]},
+{topic:"Chapter 3",q:"Which sound is classified as a BILABIAL?",correct:"/m/",wrong:["/n/","/ŋ/","/v/"]},
+{topic:"Chapter 3",q:"Which sounds are VELARS?",correct:"/k/, /g/, /ŋ/",wrong:["/t/, /d/, /n/","/p/, /b/, /m/","/ʃ/, /ʒ/, /tʃ/"]},
+{topic:"Chapter 3",q:"/θ/ and /ð/ are classified as which place of articulation?",correct:"Dentals",wrong:["Alveolars","Bilabials","Velars"]},
+{topic:"Chapter 3",q:"Which sound is classified as PALATAL?",correct:"/j/",wrong:["/w/","/r/","/l/"]},
+{topic:"Chapter 3",q:"/h/ is produced at which place of articulation?",correct:"Glottal",wrong:["Velar","Palatal","Alveolar"]},
+{topic:"Chapter 3",q:"Which group contains ONLY plosives?",correct:"/p/, /b/, /t/, /d/, /k/, /g/",wrong:["/p/, /b/, /t/, /d/, /s/, /z/","/p/, /b/, /f/, /v/, /k/, /g/","/t/, /d/, /tʃ/, /dʒ/, /k/, /g/"]},
+{topic:"Chapter 3",q:"/tʃ/ and /dʒ/ are classified as which manner of articulation?",correct:"Affricates",wrong:["Fricatives","Plosives","Approximants"]},
+{topic:"Chapter 3",q:"What is the manner of articulation of /l/?",correct:"Lateral — air passes at both sides of tongue",wrong:["Nasal — air passes through the nose","Fricative — airstream is constricted","Approximant — tongue approaches alveolar ridge"]},
+{topic:"Chapter 3",q:"Which set contains ONLY voiceless consonants?",correct:"/p/, /t/, /k/, /f/, /s/, /ʃ/, /θ/, /tʃ/, /h/",wrong:["/p/, /t/, /k/, /f/, /s/, /ʃ/, /θ/, /tʃ/, /ð/","/p/, /t/, /k/, /f/, /s/, /ʃ/, /tʃ/, /dʒ/, /h/","/p/, /t/, /k/, /f/, /s/, /θ/, /tʃ/, /h/, /z/"]},
+{topic:"Chapter 3",q:"A consonant cluster can appear at which position in a word?",correct:"At the beginning, middle, or end",wrong:["Only at the beginning","Only at the end","Only between two vowels"]},
+{topic:"Chapter 3",q:"Which of the following is an example of a word with a consonant cluster at the END?",correct:"next",wrong:["smile","crap","abstract"]},
+{topic:"Chapter 3",q:"Which word begins with a consonant cluster (two adjacent consonants, no vowel between)?",correct:"scheme",wrong:["psychology","schedule","knight"]},
+{topic:"Chapter 3",q:"A speaker refers to a small insect that can fly and bite. Which word begins with the bilabial nasal?",correct:"mosquito",wrong:["nosquito","fosquito","bosquito"]},
 
-let questions = [];
-let current = 0;
-let score = 0;
-let answered = false;
-let topicStats = {};
-let wrongLog = []; // {qNum, topic, question, chosen, correct}
+/* ─────────── CHAPTER 4 (30) ─────────── */
+{topic:"Chapter 4",q:"A learner pronounces 'bag' as /bæk/. Which explanation best accounts for this?",correct:"Final consonant devoicing influenced by the native language",wrong:["Final consonants are deleted in English","Voiced stop consonants are absent in English phonology","The vowel becomes shortened in this context"]},
+{topic:"Chapter 4",q:"A learner pronounces 'play' without aspiration on /p/. Which explanation best accounts for this?",correct:"Aspiration is reduced when /p/ occurs in the cluster /pl/",wrong:["The consonant /p/ becomes voiced before /l/","Aspiration is deleted in all English pronunciations","The following vowel affects the placement of stress"]},
+{topic:"Chapter 4",q:"The /l/ in 'light' sounds different from /l/ in 'feel'. How is this difference best described?",correct:"Clear /l/ occurs before vowels; dark /ɫ/ occurs after vowels",wrong:["One /l/ is voiced and the other is voiceless","Each /l/ represents a different phoneme","One /l/ is nasalized in certain contexts"]},
+{topic:"Chapter 4",q:"A teacher explains that /p/ in 'pin' is stronger than in 'spin'. Which process explains this?",correct:"Aspiration occurring in syllable-initial position",wrong:["Vowel reduction in unstressed syllables","Consonant deletion in connected speech","Nasalization before nasal consonants"]},
+{topic:"Chapter 4",q:"A Vietnamese learner pronounces 'measure' /ˈmeʒə/ as /ˈmesə/. What is the most likely cause?",correct:"The sound /ʒ/ is rare or absent in Vietnamese phonology",wrong:["The sound /s/ replaces /ʒ/ in all English fricatives","The vowel system differs between English and Vietnamese","The medial consonant is deleted in English"]},
+{topic:"Chapter 4",q:"A Vietnamese learner pronounces 'ship' /ʃɪp/ as /sɪp/. What is the most likely cause?",correct:"Difficulty distinguishing the post-alveolar /ʃ/ and alveolar /s/",wrong:["Incorrect placement of lexical stress","Absence of fricative consonants in English phonology","Absence of contrastive vowels in Vietnamese"]},
+{topic:"Chapter 4",q:"A Vietnamese learner pronounces 'this' and 'these' with /d/. What issue does this illustrate?",correct:"Substitution of dental fricatives with alveolar stops",wrong:["Deletion of vowel sounds in English words","Misplacement of stress in English words","Reduction of syllables in pronunciation"]},
+{topic:"Chapter 4",q:"Compare /p/ in 'pin' and 'spin'. What is the main difference?",correct:"/p/ in 'pin' is aspirated; /p/ in 'spin' is unaspirated",wrong:["Both /p/ sounds are always aspirated","Both /p/ sounds are always voiceless unaspirated","Both /p/ sounds are always voiced"]},
+{topic:"Chapter 4",q:"How many phonemes are there in the word 'cat'?",correct:"3",wrong:["1","4","2"]},
+{topic:"Chapter 4",q:"In English, the /t/ sound in 'top' and 'stop' differs mainly in:",correct:"Aspiration",wrong:["Syllable number","Stress","Vowel length"]},
+{topic:"Chapter 4",q:"In English, the phoneme /p/ may be realized as [pʰ] or [p]. These are examples of:",correct:"Allophonic variation",wrong:["Syllable changes","Stress changes","Different phonemes"]},
+{topic:"Chapter 4",q:"The sounds [p] in 'spin' and [pʰ] in 'pin' illustrate the relationship between:",correct:"Two allophones of one phoneme",wrong:["Two distinct phonemes in English","Two different lexical words","Two separate syllables"]},
+{topic:"Chapter 4",q:"Which example best illustrates the difference between syllables and words?",correct:"'cat' has one syllable and is also one word",wrong:["'desk' has two syllables and one word","'teacher' has two words and two syllables","'book' has two syllables but one word"]},
+{topic:"Chapter 4",q:"Which pair of sounds represents two different PHONEMES rather than two allophones?",correct:"/p/ and /b/",wrong:["[p] and [pʰ]","[t] and [t̚]","[l] and [ɫ]"]},
+{topic:"Chapter 4",q:"Which statement correctly describes the relationship between phonemes and syllables?",correct:"A syllable may consist of one or more phonemes",wrong:["A syllable and a phoneme are always the same","A phoneme always contains a vowel","A phoneme may consist of several syllables"]},
+{topic:"Chapter 4",q:"Which term refers to a unit of pronunciation typically containing a vowel sound?",correct:"Syllable",wrong:["Consonant cluster","Allophone","Phoneme"]},
+{topic:"Chapter 4",q:"Which term refers to different phonetic realizations of the same phoneme that do not change word meaning?",correct:"Allophone",wrong:["Diphthong","Syllable","Phoneme"]},
+{topic:"Chapter 4",q:"Which term refers to the smallest distinctive sound unit that can change meaning in a language?",correct:"Phoneme",wrong:["Allophone","Syllable","Morpheme"]},
+{topic:"Chapter 4",q:"Why might Vietnamese learners pronounce 'zoo' as 'soo'?",correct:"The phoneme /z/ is absent in many Vietnamese dialects",wrong:["The consonant inventory is larger in Vietnamese","The vowel system is absent in Vietnamese","The consonant system is absent in English"]},
+{topic:"Chapter 4",q:"The total number of phonemes in English is:",correct:"44",wrong:["26","36","48"]},
+{topic:"Chapter 4",q:"Minimal pairs are used to:",correct:"Establish phonemes by showing one sound change alters meaning",wrong:["Classify consonants by place of articulation","Show allophones of the same phoneme","Describe syllable structure"]},
+{topic:"Chapter 4",q:"'Yet' and 'jet' are an example of:",correct:"A minimal pair",wrong:["Two allophones","A triphthong pair","Two syllabic consonants"]},
+{topic:"Chapter 4",q:"Which of the following is an example of a syllabic consonant context?",correct:"'listen' — the /n/ forms a syllable without a vowel",wrong:["'pin' — the /p/ is aspirated","'spin' — the /p/ is unaspirated","'bag' — the /g/ is devoiced"]},
+{topic:"Chapter 4",q:"The lateral /l/ becomes dark [ɫ] (velarized) when it:",correct:"Follows a vowel and precedes a consonant, or follows a vowel word-finally",wrong:["Appears at the beginning of a stressed syllable","Precedes a voiceless plosive","Appears between two vowels"]},
+{topic:"Chapter 4",q:"Aspiration in English occurs only with which type of sounds?",correct:"Voiceless plosives /p/, /t/, /k/",wrong:["All fricatives","All voiced stops","Nasals and approximants"]},
+{topic:"Chapter 4",q:"Devoicing applies to which sounds when they follow a voiceless plosive?",correct:"Approximants /r/, /j/, /w/, /l/",wrong:["Fricatives /f/, /s/, /ʃ/","Nasals /m/, /n/, /ŋ/","All voiced consonants"]},
+{topic:"Chapter 4",q:"In phonemic (broad) transcription, sounds are written:",correct:"Between slashes / /",wrong:["Between square brackets [ ]","Between angle brackets < >","Between braces { }"]},
+{topic:"Chapter 4",q:"In phonetic (narrow) transcription, allophones are written:",correct:"Between square brackets [ ]",wrong:["Between slashes / /","Between braces { }","Between angle brackets < >"]},
+{topic:"Chapter 4",q:"Which type of phoneme includes stress, pitch, and intonation?",correct:"Supra-segmental phonemes",wrong:["Segmental phonemes","Allophonic phonemes","Syllabic phonemes"]},
+{topic:"Chapter 4",q:"Phonological rules describe:",correct:"How phonemes are realized as allophones in a given environment",wrong:["How letters map to meanings","How syllables form sentences","How vocabulary is acquired"]},
 
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+/* ─────────── CHAPTER 5 (30) ─────────── */
+{topic:"Chapter 5",q:"A student wants to emphasize the object in 'I bought a new car.' Which word should receive the main sentence stress?",correct:"car",wrong:["I","new","bought"]},
+{topic:"Chapter 5",q:"In natural speech, how is 'to' most likely pronounced in 'I want to go'?",correct:"/tə/",wrong:["/tɪ/","/toʊ/","/tuː/"]},
+{topic:"Chapter 5",q:"In the phrase 'cup of tea', why is 'of' often pronounced /əv/ or /ə/?",correct:"Because it is a function word that often takes a weak form",wrong:["Because it is the longest word in the phrase","Because it contains two syllables","Because it carries the main stress of the phrase"]},
+{topic:"Chapter 5",q:"In the sentence 'I CAN help you', the strong form /kæn/ is used to:",correct:"Emphasize ability or contrast",wrong:["Mark a plural noun","Reduce the vowel sound","Shorten the sentence"]},
+{topic:"Chapter 5",q:"In the sentence 'I didn't borrow the book, I bought it', why is 'bought' stressed?",correct:"To highlight contrast with the previous action",wrong:["To reduce the vowel sound","To mark the weak form of the verb","To change the grammatical class"]},
+{topic:"Chapter 5",q:"In the sentence 'She bought a new CAR', why is 'car' stressed?",correct:"It is the main content word carrying important information",wrong:["It contains the longest vowel","It is a function word","It is the shortest word"]},
+{topic:"Chapter 5",q:"In the sentence 'She didn't SAY it', what does stressing 'say' imply?",correct:"Contrast or correction of information",wrong:["A reduction in vowel length","A weak form of the verb","A change in word class"]},
+{topic:"Chapter 5",q:"In the sentence 'She finished the report yesterday', which word most likely carries the main sentence stress?",correct:"yesterday",wrong:["she","finished","the"]},
+{topic:"Chapter 5",q:"Which of the following words commonly has a weak form in connected speech?",correct:"and",wrong:["language","teacher","student"]},
+{topic:"Chapter 5",q:"Which of the following words is typically stressed in a sentence?",correct:"book",wrong:["to","of","the"]},
+{topic:"Chapter 5",q:"Which pronunciation is most natural for 'and' in the phrase 'bread and butter'?",correct:"/ənd/",wrong:["/ænd/","/ændə/","/ɑːnd/"]},
+{topic:"Chapter 5",q:"Which pronunciation of 'for' is most natural in 'This gift is for you'?",correct:"/fə/",wrong:["/fɒː/","/fɔː/","/for/"]},
+{topic:"Chapter 5",q:"Which pronunciation of 'have' is typical in 'I have finished my work'?",correct:"/həv/",wrong:["/hæv/","/hɪv/","/haːv/"]},
+{topic:"Chapter 5",q:"Which pronunciation of 'can' is most appropriate in 'Yes, I can do it'?",correct:"/kæn/",wrong:["/kən/","/kn/","/kɪn/"]},
+{topic:"Chapter 5",q:"Which statement best distinguishes word stress from sentence stress?",correct:"Word stress highlights a syllable within a word; sentence stress emphasizes important words in a sentence",wrong:["Word stress occurs only in long words; sentence stress in short sentences","Word stress occurs in writing; sentence stress occurs only in speaking","Word stress affects vowels only; sentence stress affects consonants only"]},
+{topic:"Chapter 5",q:"Which syllable is stressed in 'record' when used as a NOUN?",correct:"The first syllable",wrong:["The second syllable","Both syllables equally","No syllable is stressed"]},
+{topic:"Chapter 5",q:"Which term refers to the syllable that receives greater emphasis in a word?",correct:"Word stress",wrong:["Sentence stress","Weak form","Intonation"]},
+{topic:"Chapter 5",q:"Which type of words usually receive sentence stress in English?",correct:"Content words",wrong:["Function words","Articles","Prepositions"]},
+{topic:"Chapter 5",q:"Which word receives the main stress in 'He bought the red shirt, not the blue one'?",correct:"red",wrong:["the","bought","shirt"]},
+{topic:"Chapter 5",q:"In most two-syllable nouns and adjectives, where does the primary stress fall?",correct:"On the first syllable",wrong:["On the second syllable","On the final syllable","On the penultimate syllable"]},
+{topic:"Chapter 5",q:"For most two-syllable VERBS, where does the primary stress fall?",correct:"On the second (final) syllable",wrong:["On the first syllable","On whichever syllable has the long vowel","It varies freely"]},
+{topic:"Chapter 5",q:"Words ending in '-ic', '-tion', '-sion' typically take stress on which syllable?",correct:"The penultimate (second to last) syllable",wrong:["The ultimate (final) syllable","The antepenultimate (third to last) syllable","The first syllable"]},
+{topic:"Chapter 5",q:"Words ending in '-cy', '-ty', '-phy', '-gy', '-ate' take stress on which syllable?",correct:"The antepenultimate (third to last) syllable",wrong:["The ultimate (final) syllable","The penultimate (second to last) syllable","The first syllable"]},
+{topic:"Chapter 5",q:"Which compound noun pattern has primary stress on the FIRST part?",correct:"Noun + Noun (e.g., armchair)",wrong:["Adjective + Noun (e.g., fast food)","Adjective + -ing form (e.g., global warming)","Past participle + Noun (e.g., lost property)"]},
+{topic:"Chapter 5",q:"Which compound noun pattern has primary stress on the SECOND part?",correct:"Adjective + Noun (e.g., fast food)",wrong:["Noun + Noun (e.g., armchair)","Noun + Verb-ing (e.g., birdwatching)","Verb-ing + Noun (e.g., sitting room)"]},
+{topic:"Chapter 5",q:"Function words take their STRONG form when:",correct:"They appear at the end of an utterance, show contrast, are cited, or are emphasised",wrong:["They are always used in strong form","They appear in the middle of a sentence","They follow a content word"]},
+{topic:"Chapter 5",q:"How many main levels of stress are there in English?",correct:"4",wrong:["2","3","5"]},
+{topic:"Chapter 5",q:"Primary stress (main stress) is also called:",correct:"Full tonic",wrong:["Substress","Half stress","Lenis"]},
+{topic:"Chapter 5",q:"Which of the following words ending in '-ain' takes final (ultimate) stress?",correct:"entertain",wrong:["curtain","certain","mountain"]},
+{topic:"Chapter 5",q:"Sentence stress is often compared to:",correct:"The music/rhythm of spoken language",wrong:["The grammar of written language","The spelling rules of English","The intonation of Vietnamese"]},
+{topic:"Chapter 5",q:"In the sentence 'I love YOU' (stressing 'you'), the speaker most likely wants to convey:",correct:"That the feeling is directed at a specific person",wrong:["That the speaker does not love anyone else","That the act of loving is uncertain","That the verb 'love' is being emphasised"]},
+
+]; // end ALL_QUESTIONS
+
+// ═══════════════════════════════════
+// STATE
+// ═══════════════════════════════════
+let questions=[], current=0, score=0, answered=false;
+let topicStats={}, wrongLog=[], answeredCount=0;
+let selectedChapters=new Set(["Chapter 1","Chapter 2","Chapter 3","Chapter 4","Chapter 5"]);
+let timerInterval=null, secondsLeft=0, timedOut=false;
+
+// ═══════════════════════════════════
+// CHAPTER FILTER
+// ═══════════════════════════════════
+function toggleCh(btn){
+  const ch=btn.dataset.ch;
+  if(selectedChapters.has(ch)){
+    if(selectedChapters.size<=1)return;
+    selectedChapters.delete(ch);
+    btn.classList.remove('active');
+  }else{
+    selectedChapters.add(ch);
+    btn.classList.add('active');
   }
+}
+function toggleAll(){
+  const allActive=selectedChapters.size===5;
+  if(allActive){
+    selectedChapters=new Set(["Chapter 1"]);
+  }else{
+    selectedChapters=new Set(["Chapter 1","Chapter 2","Chapter 3","Chapter 4","Chapter 5"]);
+  }
+  document.querySelectorAll('.ch-btn[data-ch]').forEach(b=>{
+    b.classList.toggle('active',selectedChapters.has(b.dataset.ch));
+  });
+}
+
+// ═══════════════════════════════════
+// QUIZ LOGIC
+// ═══════════════════════════════════
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
   return a;
 }
 
-function startQuiz() {
-  questions = shuffle(ALL_QUESTIONS).slice(0, 50);
-  current = 0;
-  score = 0;
-  answered = false;
-  topicStats = {};
-  wrongLog = [];
-  document.getElementById('start-screen').style.display = 'none';
-  document.getElementById('result-screen').style.display = 'none';
-  document.getElementById('quiz-screen').style.display = 'block';
+function startQuiz(){
+  const pool=ALL_QUESTIONS.filter(q=>selectedChapters.has(q.topic));
+  if(pool.length<1){alert('Chọn ít nhất 1 chương!');return;}
+  questions=shuffle(pool).slice(0,30);
+  current=0;score=0;answered=false;
+  topicStats={};wrongLog=[];answeredCount=0;timedOut=false;
+
+  hide('start-screen');hide('result-screen');hide('timeout-screen');
+  show('quiz-screen');
+  startTimer(20*60);
   loadQuestion();
 }
 
-function loadQuestion() {
-  answered = false;
-  const q = questions[current];
-  document.getElementById('q-num').textContent = current + 1;
-  document.getElementById('score-display').textContent = `✓ ${score}`;
-  document.getElementById('progress-fill').style.width = `${(current / 50) * 100}%`;
-  document.getElementById('topic-tag').textContent = q.topic;
-  document.getElementById('question-text').textContent = q.q;
+function show(id){document.getElementById(id).style.display='block';}
+function hide(id){document.getElementById(id).style.display='none';}
 
-  const options = shuffle([q.correct, ...q.wrong]);
-  const letters = ['A', 'B', 'C', 'D'];
-  const grid = document.getElementById('options-grid');
-  grid.innerHTML = '';
+function startTimer(secs){
+  secondsLeft=secs;
+  clearInterval(timerInterval);
+  renderTimer();
+  timerInterval=setInterval(()=>{
+    secondsLeft--;
+    renderTimer();
+    if(secondsLeft<=0){clearInterval(timerInterval);onTimeout();}
+  },1000);
+}
+function renderTimer(){
+  const m=Math.floor(secondsLeft/60), s=secondsLeft%60;
+  const badge=document.getElementById('timer-badge');
+  badge.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  badge.className='timer-badge';
+  if(secondsLeft<=60)badge.classList.add('danger');
+  else if(secondsLeft<=180)badge.classList.add('warn');
+}
+function onTimeout(){
+  timedOut=true;
+  hide('quiz-screen');
+  show('timeout-screen');
+}
+function finishAndShow(){
+  hide('timeout-screen');
+  showResult();
+}
 
-  options.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'option-btn';
-    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
-    btn.onclick = () => selectAnswer(btn, opt, q.correct);
+function loadQuestion(){
+  answered=false;
+  const q=questions[current];
+  document.getElementById('q-num').textContent=current+1;
+  document.getElementById('score-display').textContent=`✓ ${score}`;
+  document.getElementById('progress-fill').style.width=`${(current/questions.length)*100}%`;
+  document.getElementById('topic-tag').textContent=q.topic;
+  document.getElementById('question-text').textContent=q.q;
+
+  const opts=shuffle([q.correct,...q.wrong]);
+  const letters=['A','B','C','D'];
+  const grid=document.getElementById('options-grid');
+  grid.innerHTML='';
+  opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='option-btn';
+    btn.innerHTML=`<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick=()=>selectAnswer(btn,opt,q.correct);
     grid.appendChild(btn);
   });
-
-  const fb = document.getElementById('feedback-box');
-  fb.style.display = 'none';
-  fb.className = 'feedback-box';
-
-  const cont = document.getElementById('btn-continue');
-  cont.style.display = 'none';
+  const fb=document.getElementById('feedback-box');
+  fb.style.display='none'; fb.className='feedback-box';
+  document.getElementById('btn-continue').style.display='none';
 }
 
-function selectAnswer(btn, chosen, correct) {
-  if (answered) return;
-  answered = true;
-
-  const btns = document.querySelectorAll('.option-btn');
-  const isCorrect = chosen === correct;
-
-  btns.forEach(b => {
-    const txt = b.querySelector('span:last-child').textContent;
-    b.disabled = true;
-    if (txt === correct) {
-      b.classList.add('correct');
-    } else if (b === btn && !isCorrect) {
-      b.classList.add('wrong');
-    } else {
-      b.classList.add('dimmed');
-    }
+function selectAnswer(btn,chosen,correct){
+  if(answered)return;
+  answered=true; answeredCount++;
+  const btns=document.querySelectorAll('.option-btn');
+  const ok=chosen===correct;
+  btns.forEach(b=>{
+    b.disabled=true;
+    const txt=b.querySelector('span:last-child').textContent;
+    if(txt===correct)b.classList.add('correct');
+    else if(b===btn&&!ok)b.classList.add('wrong');
+    else b.classList.add('dimmed');
   });
-
-  if (isCorrect) score++;
-
-  const topic = questions[current].topic;
-  if (!topicStats[topic]) topicStats[topic] = { correct: 0, total: 0 };
+  if(ok)score++;
+  const topic=questions[current].topic;
+  if(!topicStats[topic])topicStats[topic]={correct:0,total:0};
   topicStats[topic].total++;
-  if (isCorrect) topicStats[topic].correct++;
-  if (!isCorrect) wrongLog.push({ qNum: current + 1, topic, question: questions[current].q, chosen, correct });
+  if(ok)topicStats[topic].correct++;
+  if(!ok)wrongLog.push({qNum:current+1,topic,question:questions[current].q,chosen,correct});
 
-  const fb = document.getElementById('feedback-box');
-  fb.style.display = 'block';
-  if (isCorrect) {
-    fb.className = 'feedback-box correct';
-    fb.innerHTML = `<strong>✓ Correct!</strong>Great, you know your consonants.`;
-  } else {
-    fb.className = 'feedback-box wrong';
-    fb.innerHTML = `<strong>✗ Incorrect</strong>Correct answer: <em>${correct}</em>`;
-  }
-
-  document.getElementById('btn-continue').style.display = 'block';
+  const fb=document.getElementById('feedback-box');
+  fb.style.display='block';
+  if(ok){fb.className='feedback-box correct';fb.innerHTML=`<strong>✓ Chính xác!</strong>Bạn đã trả lời đúng.`;}
+  else{fb.className='feedback-box wrong';fb.innerHTML=`<strong>✗ Sai rồi!</strong>Đáp án đúng: <em>${correct}</em>`;}
+  document.getElementById('btn-continue').style.display='block';
 }
 
-function nextQuestion() {
+function nextQuestion(){
   current++;
-  if (current >= 50) {
-    showResult();
-  } else {
-    // Re-animate the card
-    const card = document.querySelector('.question-card');
-    card.style.animation = 'none';
-    card.offsetHeight;
-    card.style.animation = '';
+  if(current>=questions.length){clearInterval(timerInterval);showResult();}
+  else{
+    const card=document.querySelector('.question-card');
+    card.style.animation='none';card.offsetHeight;card.style.animation='';
     loadQuestion();
   }
 }
 
-function showResult() {
-  document.getElementById('quiz-screen').style.display = 'none';
-  const rs = document.getElementById('result-screen');
-  rs.style.display = 'block';
-  rs.style.animation = 'none';
-  rs.offsetHeight;
-  rs.style.animation = 'fadeUp 0.6s ease both';
+function showResult(){
+  clearInterval(timerInterval);
+  hide('quiz-screen');hide('timeout-screen');
+  const rs=document.getElementById('result-screen');
+  rs.style.display='block';
+  rs.style.animation='none';rs.offsetHeight;rs.style.animation='fadeUp .6s ease both';
 
-  const pct = Math.round((score / 50) * 100);
-  document.getElementById('result-circle').style.setProperty('--pct', pct);
-  document.getElementById('result-pct').textContent = pct + '%';
-  document.getElementById('r-correct').textContent = score;
-  document.getElementById('r-wrong').textContent = 50 - score;
-  document.getElementById('r-pct').textContent = pct + '%';
+  const total=answeredCount;
+  const pct=total>0?Math.round((score/total)*100):0;
+  document.getElementById('result-circle').style.setProperty('--pct',pct);
+  document.getElementById('result-pct').textContent=pct+'%';
+  document.getElementById('r-correct').textContent=score;
+  document.getElementById('r-wrong').textContent=total-score;
+  document.getElementById('r-pct').textContent=pct+'%';
 
-  let title, msg;
-  if (pct >= 90) { title = '🏆 Excellent!'; msg = 'Outstanding performance! You have mastered English consonant phonetics.'; }
-  else if (pct >= 75) { title = '🎉 Great job!'; msg = 'Strong understanding of consonant classification. Keep it up!'; }
-  else if (pct >= 60) { title = '👍 Good effort!'; msg = 'Solid foundation. Review the topics you missed and try again.'; }
-  else if (pct >= 40) { title = '📖 Keep studying!'; msg = 'Some concepts need more attention. Review place, manner, and voicing.'; }
-  else { title = '💪 Don\'t give up!'; msg = 'Phonetics takes practice! Go over the material and try again.'; }
+  let title,msg;
+  if(pct>=90){title='🏆 Xuất sắc!';msg='Nắm vững kiến thức ngữ âm. Tiếp tục phát huy!';}
+  else if(pct>=75){title='🎉 Tốt lắm!';msg='Hiểu bài khá vững. Ôn lại những phần còn sai nhé!';}
+  else if(pct>=60){title='👍 Cố lên!';msg='Nền tảng ổn. Xem lại chi tiết câu sai bên dưới.';}
+  else if(pct>=40){title='📖 Cần ôn thêm!';msg='Một số khái niệm cần chú ý hơn. Ôn kỹ từng chương nhé.';}
+  else{title='💪 Đừng nản!';msg='Ngữ âm cần nhiều thực hành. Đọc lại lý thuyết và thử lại!';}
+  document.getElementById('result-title').textContent=title;
+  document.getElementById('result-msg').textContent=msg;
 
-  document.getElementById('result-title').textContent = title;
-  document.getElementById('result-msg').textContent = msg;
-
-  // Render topic breakdown
-  const bd = document.getElementById('topic-breakdown');
-  bd.innerHTML = '';
-  const topicOrder = ["Place of Articulation", "Manner of Articulation", "Voicing", "Position of Soft Palate"];
-  topicOrder.forEach(topic => {
-    const s = topicStats[topic];
-    if (!s) return;
-    const p = Math.round((s.correct / s.total) * 100);
-    const cls = p >= 75 ? 'great' : p >= 50 ? 'ok' : 'poor';
-    const row = document.createElement('div');
-    row.className = 'topic-row';
-    row.innerHTML = `
-      <div class="topic-row-header">
-        <span class="topic-name">${topic}</span>
-        <span class="topic-fraction">${s.correct}/${s.total} correct</span>
-      </div>
-      <div class="topic-bar-bg">
-        <div class="topic-bar-fill ${cls}" style="width:0%" data-pct="${p}"></div>
-      </div>
-      <div class="topic-pct ${cls}">${p}%</div>
-    `;
+  // Breakdown
+  const bd=document.getElementById('topic-breakdown');
+  bd.innerHTML='';
+  const chLabels={"Chapter 1":"Ch.1 – Phonetics & Phonology","Chapter 2":"Ch.2 – English Vowels","Chapter 3":"Ch.3 – English Consonants","Chapter 4":"Ch.4 – Phonemes & Allophones","Chapter 5":"Ch.5 – Stress in English"};
+  ["Chapter 1","Chapter 2","Chapter 3","Chapter 4","Chapter 5"].forEach(topic=>{
+    const s=topicStats[topic];if(!s)return;
+    const p=Math.round((s.correct/s.total)*100);
+    const cls=p>=75?'great':p>=50?'ok':'poor';
+    const row=document.createElement('div');row.className='topic-row';
+    row.innerHTML=`<div class="topic-row-header"><span class="topic-name">${chLabels[topic]}</span><span class="topic-fraction">${s.correct}/${s.total} đúng</span></div><div class="topic-bar-bg"><div class="topic-bar-fill ${cls}" style="width:0%" data-pct="${p}"></div></div><div class="topic-pct ${cls}">${p}%</div>`;
     bd.appendChild(row);
   });
-  // Animate bars after paint
-  requestAnimationFrame(() => {
-    document.querySelectorAll('.topic-bar-fill').forEach(bar => {
-      bar.style.width = bar.dataset.pct + '%';
-    });
-  });
+  requestAnimationFrame(()=>{document.querySelectorAll('.topic-bar-fill').forEach(b=>{b.style.width=b.dataset.pct+'%';});});
 
-  // Render wrong answers detail
-  const wl = document.getElementById('wrong-list');
-  wl.innerHTML = '';
-  if (wrongLog.length === 0) {
-    document.getElementById('wrong-section').style.display = 'none';
-  } else {
-    document.getElementById('wrong-section').style.display = 'block';
-    const topicOrder = ["Place of Articulation", "Manner of Articulation", "Voicing", "Position of Soft Palate"];
-    topicOrder.forEach(topic => {
-      const items = wrongLog.filter(w => w.topic === topic);
-      if (!items.length) return;
-      const header = document.createElement('div');
-      header.className = 'wrong-topic-header';
-      header.textContent = topic;
-      wl.appendChild(header);
-      items.forEach(w => {
-        const card = document.createElement('div');
-        card.className = 'wrong-card';
-        card.innerHTML = `
-          <div class="wrong-qnum">Q${w.qNum}</div>
-          <div class="wrong-body">
-            <div class="wrong-question">${w.question}</div>
-            <div class="wrong-your">✗ Your answer: <span>${w.chosen}</span></div>
-            <div class="wrong-correct">✓ Correct: <span>${w.correct}</span></div>
-          </div>`;
+  // Wrong detail
+  const wl=document.getElementById('wrong-list');
+  wl.innerHTML='';
+  if(wrongLog.length===0){hide('wrong-section');}
+  else{
+    show('wrong-section');
+    ["Chapter 1","Chapter 2","Chapter 3","Chapter 4","Chapter 5"].forEach(topic=>{
+      const items=wrongLog.filter(w=>w.topic===topic);if(!items.length)return;
+      const hdr=document.createElement('div');hdr.className='wrong-topic-header';hdr.textContent=chLabels[topic];wl.appendChild(hdr);
+      items.forEach(w=>{
+        const card=document.createElement('div');card.className='wrong-card';
+        card.innerHTML=`<div class="wrong-qnum">Q${w.qNum}</div><div class="wrong-body"><div class="wrong-question">${w.question}</div><div class="wrong-your">✗ Bạn chọn: ${w.chosen}</div><div class="wrong-correct">✓ Đáp án đúng: <span>${w.correct}</span></div></div>`;
         wl.appendChild(card);
       });
     });
   }
 }
 
-function restartQuiz() {
-  document.getElementById('result-screen').style.display = 'none';
-  document.getElementById('start-screen').style.display = 'block';
+function restartQuiz(){
+  clearInterval(timerInterval);
+  hide('result-screen');
+  show('start-screen');
 }
 </script>
 </body>
