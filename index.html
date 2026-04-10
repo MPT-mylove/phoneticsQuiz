@@ -129,10 +129,10 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-he
   <div class="mpt-title">MPT Quiz</div>
   <div class="logo-badge">PHONETICS &amp; PHONOLOGY</div>
   <h1>English Phonetics<br>Practice Test</h1>
-  <p>Bộ ngân hàng <strong>150 câu</strong> — 5 chương. Mỗi lần thi <strong>30 câu ngẫu nhiên</strong>, thời gian <strong>20 phút</strong>.</p>
+  <p>Bộ ngân hàng <strong>300 câu</strong> — 5 chương. Mỗi lần thi <strong>35 câu ngẫu nhiên</strong>, thời gian <strong>20 phút</strong>.</p>
   <div class="stats-row">
-    <div class="stat-pill"><span class="num">150</span><span class="label">Câu hỏi</span></div>
-    <div class="stat-pill"><span class="num">30</span><span class="label">Mỗi lần thi</span></div>
+    <div class="stat-pill"><span class="num">300</span><span class="label">Câu hỏi</span></div>
+    <div class="stat-pill"><span class="num">35</span><span class="label">Mỗi lần thi</span></div>
     <div class="stat-pill"><span class="num">20'</span><span class="label">Thời gian</span></div>
     <div class="stat-pill"><span class="num">5</span><span class="label">Chương</span></div>
   </div>
@@ -151,7 +151,7 @@ body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-he
 <!-- ── QUIZ ── -->
 <div id="quiz-screen">
   <div class="top-bar">
-    <div class="q-counter">Câu <span id="q-num">1</span> / 30</div>
+    <div class="q-counter">Câu <span id="q-num">1</span> / 35</div>
     <div class="score-badge" id="score-display">✓ 0</div>
     <div class="timer-badge" id="timer-badge">20:00</div>
   </div>
@@ -362,6 +362,165 @@ const ALL_QUESTIONS = [
 {topic:"Chapter 5",q:"Sentence stress is often compared to:",correct:"The music/rhythm of spoken language",wrong:["The grammar of written language","The spelling rules of English","The intonation of Vietnamese"]},
 {topic:"Chapter 5",q:"In the sentence 'I love YOU' (stressing 'you'), the speaker most likely wants to convey:",correct:"That the feeling is directed at a specific person",wrong:["That the speaker does not love anyone else","That the act of loving is uncertain","That the verb 'love' is being emphasised"]},
 
+/* ─────────── CHAPTER 1 – EXTRA 30 ─────────── */
+{topic:"Chapter 1",q:"Which sub-field of phonetics focuses on articulatory processes — how speech sounds are physically produced?",correct:"Articulatory phonetics",wrong:["Acoustic phonetics","Auditory phonetics","Applied phonetics"]},
+{topic:"Chapter 1",q:"The glottis is best described as:",correct:"The space between the vocal cords",wrong:["The hard upper palate","The tip of the tongue","The back of the throat"]},
+{topic:"Chapter 1",q:"Which of the following is NOT part of the tongue?",correct:"Epiglottis",wrong:["Tip","Blade","Root"]},
+{topic:"Chapter 1",q:"The epiglottis functions mainly to:",correct:"Prevent food from entering the trachea during swallowing",wrong:["Produce nasal resonance","Vibrate to create voiced sounds","Control lip rounding"]},
+{topic:"Chapter 1",q:"Which organ separates the trachea from the esophagus?",correct:"The larynx, located just above the split",wrong:["The pharynx","The uvula","The alveolar ridge"]},
+{topic:"Chapter 1",q:"What is the role of the uvula in speech?",correct:"It hangs from the soft palate and can be lowered to allow nasal airflow",wrong:["It produces the vibration needed for voiced sounds","It shapes the tongue's position for vowels","It controls the aspiration of plosives"]},
+{topic:"Chapter 1",q:"In the production of speech, the lungs provide:",correct:"The airstream that drives sound production",wrong:["The resonance cavity for vowels","The friction needed for fricatives","The vibration for voiced sounds"]},
+{topic:"Chapter 1",q:"Which statement about the hard palate is TRUE?",correct:"It is a passive articulator that the tongue can touch",wrong:["It vibrates to produce palatal sounds","It controls the nasal airway","It is part of the larynx"]},
+{topic:"Chapter 1",q:"The nasal cavity resonates for which type of sounds?",correct:"Nasal sounds like /m/, /n/, /ŋ/",wrong:["All fricatives","All plosives","All vowels"]},
+{topic:"Chapter 1",q:"A waveform in acoustic phonetics displays:",correct:"Amplitude (loudness) of sound over time",wrong:["The position of the tongue during articulation","The distribution of phonemes in a language","How listeners perceive speech sounds"]},
+{topic:"Chapter 1",q:"Phonology is best described as:",correct:"The study of the distribution, patterning, and rules governing sounds in a language",wrong:["The study of word meanings","The study of physical sound production","The study of sentence structure"]},
+{topic:"Chapter 1",q:"Which of the following is an example of phonology (not phonetics)?",correct:"The rule that /s/ becomes /z/ after voiced sounds in English plurals",wrong:["Measuring the duration of a vowel","Describing how the tongue touches the alveolar ridge","Recording the frequency of a consonant"]},
+{topic:"Chapter 1",q:"The oral cavity is:",correct:"The mouth — the main resonating chamber for most speech sounds",wrong:["The space in the nose used for nasal sounds","The passage behind the tongue and above the larynx","The space between the vocal cords"]},
+{topic:"Chapter 1",q:"Which part of the tongue lies between the tip and the front?",correct:"Blade",wrong:["Root","Back","Dorsum"]},
+{topic:"Chapter 1",q:"When we say a sound is 'voiced', we mean:",correct:"The vocal cords are vibrating while it is produced",wrong:["The sound is made in the mouth, not the nose","The sound is produced with high amplitude","The airstream is stopped completely"]},
+{topic:"Chapter 1",q:"The pharynx (throat) is approximately how long in women?",correct:"About 7 cm",wrong:["About 5 cm","About 10 cm","About 8 cm"]},
+{topic:"Chapter 1",q:"Which branch of linguistics is MOST directly concerned with how sounds encode meaning in a specific language?",correct:"Phonology",wrong:["Morphology","Syntax","Articulatory phonetics"]},
+{topic:"Chapter 1",q:"Which of the following pairs are both ACTIVE articulators?",correct:"Tongue and lower jaw",wrong:["Alveolar ridge and hard palate","Upper teeth and hard palate","Soft palate and upper teeth"]},
+{topic:"Chapter 1",q:"IPA stands for:",correct:"International Phonetic Alphabet",wrong:["Internal Phonology Association","Integrated Phonetics Analysis","International Pronunciation Archive"]},
+{topic:"Chapter 1",q:"The term 'speech sound' refers to:",correct:"Any sound produced by the human vocal tract in speech",wrong:["Only vowels in a language","Only consonants in a language","Any sound that can be written as a letter"]},
+{topic:"Chapter 1",q:"According to the waveform, what indicates a LOUDER sound?",correct:"Bigger (larger amplitude) waves",wrong:["Longer duration waves","Higher frequency waves","Darker regions on the spectrogram"]},
+{topic:"Chapter 1",q:"Which statement about the soft palate (velum) is correct?",correct:"When raised, it closes the nasal passage; when lowered, it opens it",wrong:["It always remains in a fixed position during speech","It only moves during the production of vowels","It vibrates to produce voiced fricatives"]},
+{topic:"Chapter 1",q:"'Phoneticians' are best described as:",correct:"Linguists who specialize in studying speech sounds",wrong:["Linguists who study word meanings","Teachers who teach pronunciation only","Scientists who study the brain's language areas"]},
+{topic:"Chapter 1",q:"Articulatory phonetics is concerned with:",correct:"How and where speech sounds are produced in the vocal tract",wrong:["How sound waves travel through the air","How the brain processes speech sounds","How phonemes create meaning differences"]},
+{topic:"Chapter 1",q:"The alveolar ridge is located:",correct:"Just behind the upper front teeth",wrong:["Between the hard and soft palate","At the back of the mouth near the uvula","At the base of the tongue"]},
+{topic:"Chapter 1",q:"Which of the following is a characteristic of VOICELESS sounds?",correct:"The vocal cords are spread apart and do not vibrate",wrong:["The velum is lowered","The lips are always rounded","The tongue touches the hard palate"]},
+{topic:"Chapter 1",q:"The study of how listeners recognize and distinguish speech sounds is:",correct:"Auditory phonetics",wrong:["Articulatory phonetics","Acoustic phonetics","Phonology"]},
+{topic:"Chapter 1",q:"A spectrogram shows:",correct:"Frequency, amplitude and time of speech sounds simultaneously",wrong:["The speaker's vocal cord length","The number of syllables in an utterance","The tongue's position for each sound"]},
+{topic:"Chapter 1",q:"Phonetics is defined as a branch of linguistics that concerns:",correct:"The physical properties of speech sounds",wrong:["The rules governing word order in sentences","The meaning of words and phrases","The history of language change over time"]},
+{topic:"Chapter 1",q:"Which of the following is TRUE about the relationship between phonetics and phonology?",correct:"Phonetics describes physical sounds; phonology describes their systematic function in language",wrong:["Phonetics is part of phonology","Phonology studies sounds physically; phonetics studies their function","They are different terms for the same field"]},
+
+/* ─────────── CHAPTER 2 – EXTRA 30 ─────────── */
+{topic:"Chapter 2",q:"What is a monophthong?",correct:"A pure vowel sound that does not change quality during production",wrong:["A vowel sound that glides from one quality to another","A consonant cluster","A vowel followed by a nasal consonant"]},
+{topic:"Chapter 2",q:"How many monophthongs are there in standard British English?",correct:"12",wrong:["8","10","14"]},
+{topic:"Chapter 2",q:"Which vowel is also known as the 'schwa'?",correct:"/ə/",wrong:["/ʌ/","/ɜː/","/ɪ/"]},
+{topic:"Chapter 2",q:"The vowel /iː/ is described as:",correct:"High front spread long vowel",wrong:["High back rounded long vowel","Mid central unrounded short vowel","Low front spread short vowel"]},
+{topic:"Chapter 2",q:"The vowel /ɑː/ is described as:",correct:"Low back rounded long vowel",wrong:["Low front spread long vowel","Mid central unrounded long vowel","High back rounded long vowel"]},
+{topic:"Chapter 2",q:"The vowel /ɔː/ is classified as:",correct:"Mid back rounded long vowel",wrong:["High back rounded long vowel","Low central unrounded long vowel","Mid front spread long vowel"]},
+{topic:"Chapter 2",q:"Which vowel is the CENTRAL vowel in the word 'bird'?",correct:"/ɜː/",wrong:["/ɪ/","/ə/","/ʌ/"]},
+{topic:"Chapter 2",q:"Which of the following words contains the vowel /æ/?",correct:"cat",wrong:["cut","cot","coat"]},
+{topic:"Chapter 2",q:"The vowel /ʌ/ as in 'cup' is classified as:",correct:"Low central unrounded short vowel",wrong:["High back rounded short vowel","Mid front spread short vowel","Low back rounded short vowel"]},
+{topic:"Chapter 2",q:"Which vowel appears in the word 'book' /bʊk/?",correct:"/ʊ/ — high back rounded short vowel",wrong:["/uː/ — high back rounded long vowel","/ə/ — mid central short vowel","/ɔː/ — mid back long vowel"]},
+{topic:"Chapter 2",q:"In the word 'see' /siː/, the vowel is:",correct:"High front spread long vowel",wrong:["High back rounded long vowel","Mid front spread long vowel","Low front spread long vowel"]},
+{topic:"Chapter 2",q:"The diphthong /eɪ/ as in 'day' is:",correct:"A closing diphthong that glides from mid front to high front",wrong:["A centering diphthong that glides toward /ə/","A low back diphthong","A nasal diphthong"]},
+{topic:"Chapter 2",q:"The centering diphthong /eə/ as in 'hair' glides toward:",correct:"/ə/ (schwa)",wrong:["/iː/","/uː/","/ɑː/"]},
+{topic:"Chapter 2",q:"The triphthong /aɪə/ as in 'fire' consists of which combination?",correct:"/aɪ/ (closing diphthong) + /ə/",wrong:["/ɑː/ + /ɪ/ + /ə/","/æ/ + /ɪ/ + /ə/","/aʊ/ + /ə/"]},
+{topic:"Chapter 2",q:"What does 'closing diphthong' mean?",correct:"The tongue moves toward a higher (closer) position during the glide",wrong:["The mouth closes completely at the end","The sound ends with a consonant","The sound is shorter than a monophthong"]},
+{topic:"Chapter 2",q:"Which word contains the diphthong /ɔɪ/?",correct:"boy",wrong:["bay","bow","boo"]},
+{topic:"Chapter 2",q:"Which word contains the diphthong /əʊ/?",correct:"go",wrong:["cow","buy","how"]},
+{topic:"Chapter 2",q:"Which vowel is described as MID CENTRAL in English?",correct:"/ə/",wrong:["/ʌ/","/ɜː/","/e/"]},
+{topic:"Chapter 2",q:"The vowel /e/ as in 'bed' is classified as:",correct:"Mid front unrounded short vowel",wrong:["High front unrounded short vowel","Low front spread short vowel","Mid back rounded short vowel"]},
+{topic:"Chapter 2",q:"Which pair of vowels are both BACK vowels?",correct:"/uː/ and /ɒ/",wrong:["/iː/ and /e/","/æ/ and /ʌ/","/ɪ/ and /ə/"]},
+{topic:"Chapter 2",q:"In the phrase 'No highway here – cowboy! There're tourists', which diphthong does 'tourists' represent?",correct:"/ʊə/",wrong:["/ɪə/","/eə/","/aʊ/"]},
+{topic:"Chapter 2",q:"The vowel /ɒ/ as in 'hot' is classified as:",correct:"Low back rounded short vowel",wrong:["Low back unrounded short vowel","Mid back rounded short vowel","Low central short vowel"]},
+{topic:"Chapter 2",q:"'Syllable nucleus' refers to:",correct:"The vowel (or vowel-like sound) at the peak of a syllable",wrong:["The consonant at the beginning of a syllable","The consonant at the end of a syllable","The stress placed on a syllable"]},
+{topic:"Chapter 2",q:"Which statement about diphthongs is TRUE?",correct:"A diphthong contains two vowel elements but is pronounced as one syllable",wrong:["A diphthong is two separate syllables","A diphthong is always long","A diphthong always begins with /ə/"]},
+{topic:"Chapter 2",q:"The vowels /ɪ/, /iː/, /æ/, /e/ are all:",correct:"Front vowels — the front of the tongue is raised toward the hard palate",wrong:["Back vowels — the back of the tongue is raised","Central vowels — the middle of the tongue is highest","Rounded vowels — the lips are rounded"]},
+{topic:"Chapter 2",q:"Which of the following is NOT a long vowel?",correct:"/ʊ/",wrong:["/iː/","/ɜː/","/ɑː/"]},
+{topic:"Chapter 2",q:"The vowel /ɪ/ as in 'sit' differs from /iː/ as in 'seat' mainly in:",correct:"Length and height — /ɪ/ is shorter and slightly lower",wrong:["Voicing — /ɪ/ is voiceless",  "Lip shape — /ɪ/ is rounded","Place — /ɪ/ is a back vowel"]},
+{topic:"Chapter 2",q:"Which word contains the triphthong /əʊə/?",correct:"lower",wrong:["layer","fire","power"]},
+{topic:"Chapter 2",q:"The HIGH vowels /ɪ/, /iː/, /uː/, /ʊ/ are produced with:",correct:"The tongue raised high in the mouth and the mouth relatively closed",wrong:["The mouth wide open and the tongue low","The tongue in a central position","The soft palate lowered"]},
+{topic:"Chapter 2",q:"Which vowel is present in the word 'about' in its unstressed first syllable?",correct:"/ə/ (schwa)",wrong:["/æ/","/ʌ/","/ɒ/"]},
+
+/* ─────────── CHAPTER 3 – EXTRA 30 ─────────── */
+{topic:"Chapter 3",q:"How many consonants are there in English?",correct:"24",wrong:["20","26","22"]},
+{topic:"Chapter 3",q:"Which manner of articulation involves the airstream being completely stopped then released with a small explosion?",correct:"Plosive",wrong:["Fricative","Affricate","Nasal"]},
+{topic:"Chapter 3",q:"Which manner of articulation involves friction caused by a constricted airstream?",correct:"Fricative",wrong:["Plosive","Lateral","Nasal"]},
+{topic:"Chapter 3",q:"The sound /r/ is classified as which place of articulation?",correct:"Retroflex — tongue tip curled toward post-alveolar region",wrong:["Alveolar — tip touches alveolar ridge","Palatal — tongue touches hard palate","Velar — back tongue touches soft palate"]},
+{topic:"Chapter 3",q:"Which sound is a VOICED PALATO-ALVEOLAR fricative?",correct:"/ʒ/",wrong:["/ʃ/","/s/","/z/"]},
+{topic:"Chapter 3",q:"Which sound is a VOICELESS PALATO-ALVEOLAR fricative?",correct:"/ʃ/",wrong:["/ʒ/","/z/","/s/"]},
+{topic:"Chapter 3",q:"The approximants /w/, /r/, /j/ are also called:",correct:"Glides — because the articulation glides smoothly without much obstruction",wrong:["Nasals — because they pass air through the nose","Laterals — because air passes at the sides of the tongue","Affricates — because they stop then release with friction"]},
+{topic:"Chapter 3",q:"Which of the following is a VOICED BILABIAL plosive?",correct:"/b/",wrong:["/p/","/m/","/f/"]},
+{topic:"Chapter 3",q:"Which of the following is a VOICELESS BILABIAL plosive?",correct:"/p/",wrong:["/b/","/m/","/w/"]},
+{topic:"Chapter 3",q:"The sound /n/ is classified as:",correct:"Voiced alveolar nasal",wrong:["Voiced velar nasal","Voiced bilabial nasal","Voiceless alveolar nasal"]},
+{topic:"Chapter 3",q:"The sound /ŋ/ as in 'sing' is classified as:",correct:"Voiced velar nasal",wrong:["Voiced alveolar nasal","Voiced bilabial nasal","Voiceless velar nasal"]},
+{topic:"Chapter 3",q:"Which of the following is a LABIO-DENTAL consonant?",correct:"/v/",wrong:["/b/","/z/","/ð/"]},
+{topic:"Chapter 3",q:"Which description matches /dʒ/ as in 'judge'?",correct:"Voiced palato-alveolar affricate",wrong:["Voiceless palato-alveolar affricate","Voiced alveolar fricative","Voiced palato-alveolar fricative"]},
+{topic:"Chapter 3",q:"Which description matches /tʃ/ as in 'church'?",correct:"Voiceless palato-alveolar affricate",wrong:["Voiced palato-alveolar affricate","Voiceless alveolar fricative","Voiceless palato-alveolar fricative"]},
+{topic:"Chapter 3",q:"How many fricatives are there in English?",correct:"9",wrong:["7","8","6"]},
+{topic:"Chapter 3",q:"The sound /ð/ as in 'this' is classified as:",correct:"Voiced dental fricative",wrong:["Voiceless dental fricative","Voiced alveolar fricative","Voiced labio-dental fricative"]},
+{topic:"Chapter 3",q:"The sound /θ/ as in 'think' is classified as:",correct:"Voiceless dental fricative",wrong:["Voiced dental fricative","Voiceless alveolar fricative","Voiceless labio-dental fricative"]},
+{topic:"Chapter 3",q:"Which sound is a VOICED VELAR plosive?",correct:"/g/",wrong:["/k/","/ŋ/","/j/"]},
+{topic:"Chapter 3",q:"Which sound is a VOICELESS VELAR plosive?",correct:"/k/",wrong:["/g/","/ŋ/","/h/"]},
+{topic:"Chapter 3",q:"The definition of a consonant cluster is:",correct:"Two or more consonants together without any intervening vowel",wrong:["A single consonant followed by a vowel","Two vowels pronounced together","A stressed syllable containing a consonant"]},
+{topic:"Chapter 3",q:"In the word 'splash', how many consonants are in the initial cluster?",correct:"3 — /spl/",wrong:["2 — /sp/","4 — /spla/","2 — /pl/"]},
+{topic:"Chapter 3",q:"Which word has a consonant cluster in the MIDDLE?",correct:"abstract",wrong:["smile","next","click"]},
+{topic:"Chapter 3",q:"The sound /w/ is classified as:",correct:"Voiced bilabial approximant (glide)",wrong:["Voiced labio-dental approximant","Voiceless bilabial approximant","Voiced velar approximant"]},
+{topic:"Chapter 3",q:"The sound /j/ as in 'yes' is classified as:",correct:"Voiced palatal approximant (glide)",wrong:["Voiced velar approximant","Voiced alveolar approximant","Voiced bilabial approximant"]},
+{topic:"Chapter 3",q:"Which set contains ONLY voiced consonants?",correct:"/b/, /d/, /g/, /v/, /z/, /ʒ/, /ð/, /dʒ/, /m/, /n/, /ŋ/, /l/, /r/, /w/, /j/",wrong:["/b/, /d/, /g/, /p/, /z/, /ʒ/, /ð/","/b/, /d/, /g/, /v/, /z/, /ʃ/, /θ/","/b/, /d/, /p/, /t/, /m/, /n/, /ŋ/"]},
+{topic:"Chapter 3",q:"Consonants can mark which positions in a syllable?",correct:"The beginning and the end of syllables",wrong:["Only the beginning of syllables","Only the end of syllables","The center (nucleus) of syllables"]},
+{topic:"Chapter 3",q:"Which word begins with an alveolar approximant (not lateral)?",correct:"right",wrong:["night","light","tight"]},
+{topic:"Chapter 3",q:"Which consonant involves air passing out at BOTH SIDES of the tongue?",correct:"/l/",wrong:["/r/","/n/","/j/"]},
+{topic:"Chapter 3",q:"Which of the following words has a consonant cluster at the BEGINNING?",correct:"crap",wrong:["lend","must","cold"]},
+{topic:"Chapter 3",q:"During the production of NASALS, which of the following happens?",correct:"The soft palate is lowered and the uvula opens the nasal passage",wrong:["The soft palate is raised and air exits through the mouth only","The vocal cords stop vibrating","The tongue is pressed flat against the hard palate"]},
+
+/* ─────────── CHAPTER 4 – EXTRA 30 ─────────── */
+{topic:"Chapter 4",q:"A phoneme is defined as:",correct:"The smallest sound unit that can distinguish meaning in a language",wrong:["Any speech sound produced by humans","A sound that always has the same pronunciation","A syllable in a word"]},
+{topic:"Chapter 4",q:"An allophone is defined as:",correct:"A variant of a phoneme that does not change meaning",wrong:["A completely different phoneme","A syllable-level unit","A stress pattern in a word"]},
+{topic:"Chapter 4",q:"The word 'knife' /naɪf/ contains how many phonemes?",correct:"3 — /n/, /aɪ/, /f/",wrong:["5 — /k/, /n/, /aɪ/, /f/, /e/","4 — /k/, /n/, /aɪ/, /f/","2 — /naɪ/, /f/"]},
+{topic:"Chapter 4",q:"Which of the following is a classic example of a minimal pair in English?",correct:"'pat' and 'bat' — differ only in the voicing of the initial consonant",wrong:["'cat' and 'cats' — differ in number","'run' and 'running' — differ in tense","'happy' and 'happiness' — differ in word class"]},
+{topic:"Chapter 4",q:"Which phonological process makes /r/ voiceless in the word 'pray'?",correct:"Devoicing — /r/ follows the voiceless plosive /p/",wrong:["Aspiration — /p/ spreads its aspiration to /r/","Nasalization — the nasal cavity is involved","Velarization — the back of the tongue rises"]},
+{topic:"Chapter 4",q:"The process by which the back of the tongue rises toward the velum during /l/ articulation is:",correct:"Velarization (producing dark /ɫ/)",wrong:["Aspiration","Devoicing","Nasalization"]},
+{topic:"Chapter 4",q:"In the word 'bottle' /bɒtl̩/, the final /l/ is:",correct:"A syllabic lateral — it forms a syllable without a vowel",wrong:["A dark /ɫ/ without any special status","A voiceless lateral","An approximant replacing a vowel"]},
+{topic:"Chapter 4",q:"Which of the following phonological rules applies to English plural formation?",correct:"/-s/ is realized as [z] after voiced sounds (e.g., dogs /dɒgz/)",wrong:["/-s/ is always pronounced as /s/","/-s/ is always pronounced as /z/","/-s/ is dropped in fast speech"]},
+{topic:"Chapter 4",q:"In the word 'beaten' /biːʔn/, the /t/ is realized as:",correct:"A glottal stop /ʔ/ before the nasal",wrong:["An aspirated [tʰ]","A lateral /l/","A voiced [d]"]},
+{topic:"Chapter 4",q:"The /n/ in 'listen' /lɪsn̩/ is described as:",correct:"A syllabic nasal — it forms its own syllable",wrong:["A silent consonant","A voiced alveolar fricative","An aspirated nasal"]},
+{topic:"Chapter 4",q:"Which statement about phonemic vs. phonetic transcription is correct?",correct:"Phonemic /.../ shows broad contrasts; phonetic [...] shows fine detail including allophones",wrong:["Phonemic /.../ shows fine detail; phonetic [...] shows only phonemes","Both systems use the same brackets","Phonemic transcription includes aspiration marks"]},
+{topic:"Chapter 4",q:"Aspiration in English is represented with which symbol?",correct:"A superscript 'h' — e.g., [pʰ]",wrong:["A subscript 'h' — e.g., [ph]","An apostrophe — e.g., [p']","A tilde — e.g., [p̃]"]},
+{topic:"Chapter 4",q:"Which context triggers aspiration of voiceless plosives in English?",correct:"When they occur in syllable-initial position before a stressed vowel, without a preceding /s/",wrong:["When they follow a voiced consonant","When they appear at the end of a word","Whenever they precede a nasal consonant"]},
+{topic:"Chapter 4",q:"The principle that allophones of the same phoneme are in COMPLEMENTARY DISTRIBUTION means:",correct:"They never appear in the same phonetic environment",wrong:["They always sound identical","They can replace each other freely","They are both phonemes"]},
+{topic:"Chapter 4",q:"How many syllables does the word 'strength' have?",correct:"1",wrong:["2","3","4"]},
+{topic:"Chapter 4",q:"Which of the following words is DISYLLABIC?",correct:"table",wrong:["cat","strength","information"]},
+{topic:"Chapter 4",q:"An OPEN syllable is one that:",correct:"Ends with a vowel sound (no coda consonant)",wrong:["Begins with a vowel sound","Contains two vowels","Has no onset consonant"]},
+{topic:"Chapter 4",q:"A CLOSED syllable is one that:",correct:"Ends with a consonant (has a coda)",wrong:["Begins with a consonant","Contains a long vowel","Has no onset consonant"]},
+{topic:"Chapter 4",q:"The syllable structure 'Onset + Nucleus + Coda' — what is the NUCLEUS?",correct:"The vowel — the most sonorous element, forming the peak of the syllable",wrong:["The first consonant","The final consonant","The stressed part only"]},
+{topic:"Chapter 4",q:"Which of the following is an example of a syllabic consonant?",correct:"/n̩/ in 'button' /bʌtn̩/",wrong:["/p/ in 'pin'","/s/ in 'spin'","/m/ in 'him'"]},
+{topic:"Chapter 4",q:"The phonological rule 'vowels are shorter before voiceless consonants' means:",correct:"The vowel in 'mat' is shorter than in 'mad' because /t/ is voiceless",wrong:["Voiceless consonants delete the preceding vowel","All vowels before consonants become /ə/","Voiceless consonants lengthen the following vowel"]},
+{topic:"Chapter 4",q:"The phoneme /p/ in English and the phoneme /p/ in a different language such as Thai are:",correct:"Different phonemes because they contrast with different allophones",wrong:["Identical phonemes","Both allophones of a universal /p/","Both the same since IPA symbols are universal"]},
+{topic:"Chapter 4",q:"Which of the following pairs are ALLOPHONES of the same phoneme?",correct:"[pʰ] in 'pin' and [p] in 'spin'",wrong:["/p/ and /b/","/t/ and /d/","/k/ and /g/"]},
+{topic:"Chapter 4",q:"Supra-segmental features operate:",correct:"Above the level of individual segments — on syllables, words, and phrases",wrong:["Within individual consonant sounds","Only in voiceless sounds","Only in stressed syllables"]},
+{topic:"Chapter 4",q:"The term 'phonetic realization' refers to:",correct:"How an abstract phoneme is actually pronounced in a given context",wrong:["How a word is spelled in IPA","The number of phonemes in a word","The stress pattern of a word"]},
+{topic:"Chapter 4",q:"Which word contains a TRISYLLABIC structure?",correct:"beautiful",wrong:["cat","table","strength"]},
+{topic:"Chapter 4",q:"If changing one sound in a word changes its meaning, those two sounds are:",correct:"Two different phonemes (they are in contrastive distribution)",wrong:["Two allophones of the same phoneme","Complementarily distributed","Identical in all environments"]},
+{topic:"Chapter 4",q:"The word 'spin' /spɪn/ — the /p/ is:",correct:"Unaspirated because it follows /s/ in the same syllable",wrong:["Aspirated because it follows a vowel","Voiced because /s/ is voiced","Silent in fast speech"]},
+{topic:"Chapter 4",q:"Which phonological process occurs when /l/ appears in 'film' or 'help'?",correct:"Velarization — /l/ becomes dark [ɫ] after the vowel before a consonant",wrong:["Aspiration","Devoicing","Nasalization"]},
+{topic:"Chapter 4",q:"In English, the choice between [pʰ] and [p] as allophones of /p/ depends on:",correct:"The phonetic environment — specifically whether /p/ is syllable-initial before a stressed vowel",wrong:["The speaker's choice in each utterance","Whether the word is a noun or verb","The length of the preceding vowel"]},
+
+/* ─────────── CHAPTER 5 – EXTRA 30 ─────────── */
+{topic:"Chapter 5",q:"The word 'photograph' has primary stress on:",correct:"The first syllable: PHO-to-graph",wrong:["The second syllable: pho-TO-graph","The third syllable: pho-to-GRAPH","It is equally stressed on all syllables"]},
+{topic:"Chapter 5",q:"The word 'photography' has primary stress on:",correct:"The second syllable: pho-TOG-ra-phy (penultimate before -phy)",wrong:["The first syllable: PHO-to-gra-phy","The third syllable: pho-tog-RA-phy","The last syllable"]},
+{topic:"Chapter 5",q:"Secondary stress in English is:",correct:"A level of stress weaker than primary but stronger than unstressed syllables",wrong:["The same as primary stress in long words","Only found in compound words","The stress placed on function words"]},
+{topic:"Chapter 5",q:"Which of the following words has its primary stress on the THIRD syllable?",correct:"entertain",wrong:["happy","water","economy"]},
+{topic:"Chapter 5",q:"The word 'record' shifts stress depending on its word class. When used as a VERB, the stress falls on:",correct:"The second syllable: re-CORD",wrong:["The first syllable: RE-cord","Both syllables equally","The last consonant cluster"]},
+{topic:"Chapter 5",q:"Which of the following is a content word?",correct:"teacher",wrong:["the","of","and"]},
+{topic:"Chapter 5",q:"Which of the following is a function (grammatical) word?",correct:"at",wrong:["run","beautiful","sleep"]},
+{topic:"Chapter 5",q:"In the sentence 'She IS coming', stressing 'is' serves to:",correct:"Emphasize or confirm the action as true (contrast or emphasis)",wrong:["Indicate a question","Weaken the meaning of the sentence","Mark the function word in weak form"]},
+{topic:"Chapter 5",q:"The weak form of 'him' in connected speech is typically:",correct:"/ɪm/ — the initial /h/ is dropped",wrong:["/hɪm/ — fully pronounced","/həm/ — with schwa","/hiːm/ — with long vowel"]},
+{topic:"Chapter 5",q:"The compound adjective 'hard-working' has primary stress on:",correct:"The second part: hard-WORKing",wrong:["The first part: HARD-working","Both parts equally","Neither part — it is unstressed"]},
+{topic:"Chapter 5",q:"In the compound noun 'BIRD-watching', the primary stress falls on:",correct:"The first part: BIRD",wrong:["The second part: watching","The -ing suffix","Both parts equally"]},
+{topic:"Chapter 5",q:"Which of the following compound adjectives has stress on the FIRST part?",correct:"carefree — CARE-free",wrong:["snow-white — snow-WHITE","long-term — long-TERM","fully-grown — fully-GROWN"]},
+{topic:"Chapter 5",q:"In rapid or connected speech, the word 'them' /ðem/ often becomes:",correct:"/ðəm/ — the vowel reduces to schwa",wrong:["/ðiːm/ — the vowel lengthens","/tem/ — the initial consonant devoices","/hɛm/ — the /ð/ changes to /h/"]},
+{topic:"Chapter 5",q:"The word 'economy' has primary stress on:",correct:"The second syllable: e-CON-o-my",wrong:["The first syllable: E-con-o-my","The third syllable: e-con-O-my","The fourth syllable: e-con-o-MY"]},
+{topic:"Chapter 5",q:"The word 'academic' has primary stress on which syllable?",correct:"The third syllable: ac-a-DEM-ic (penultimate before -ic)",wrong:["The first syllable: AC-a-dem-ic","The second syllable: a-CA-dem-ic","The fourth syllable: a-ca-dem-IC"]},
+{topic:"Chapter 5",q:"In English sentence stress, the time between stressed syllables is:",correct:"Approximately equal (English is stress-timed)",wrong:["Completely irregular","Determined by the number of syllables","Longer in longer sentences"]},
+{topic:"Chapter 5",q:"Which of the following correctly describes the strong form of 'can'?",correct:"/kæn/ — used for emphasis or when cited",wrong:["/kən/ — the reduced weak form","/kɪn/ — the dialectal form","/kn/ — the fully reduced form"]},
+{topic:"Chapter 5",q:"The term 'antepenultimate' syllable refers to:",correct:"The third syllable from the end of a word",wrong:["The last syllable","The second last syllable","The first syllable"]},
+{topic:"Chapter 5",q:"The term 'penultimate' syllable refers to:",correct:"The second to last syllable",wrong:["The last syllable","The third last syllable","The first syllable"]},
+{topic:"Chapter 5",q:"The term 'ultimate' syllable refers to:",correct:"The final syllable of a word",wrong:["The second to last syllable","The third to last syllable","The most stressed syllable"]},
+{topic:"Chapter 5",q:"Which ending typically causes stress to fall on the syllable immediately before it?",correct:"-tion (as in 'naˈtion', 'producˈtion')",wrong:["-ness (as in 'happiness')","-ly (as in 'quickly')","-ful (as in 'beautiful')"]},
+{topic:"Chapter 5",q:"In the compound noun 'FLIGHT attendant', which part receives primary stress?",correct:"The first part: FLIGHT",wrong:["The second part: atTENdant","Both parts equally","The suffix '-ant'"]},
+{topic:"Chapter 5",q:"The phrase 'global warming' is a compound noun with stress on:",correct:"The second part: global WARMing",wrong:["The first part: GLObal warming","Both parts equally","The suffix '-ing'"]},
+{topic:"Chapter 5",q:"Which of the following sentences uses stress to show CONTRAST?",correct:"'I didn't say SHE stole it' (implying someone else did)",wrong:["'The cat sat on the mat'","'It is raining today'","'She likes coffee'"]},
+{topic:"Chapter 5",q:"In English, unstressed syllables most often contain:",correct:"The schwa /ə/ or a shortened vowel",wrong:["A long vowel","A diphthong","A stressed monophthong"]},
+{topic:"Chapter 5",q:"Which of the following words takes stress on its FINAL syllable?",correct:"volunteer",wrong:["happy","water","open"]},
+{topic:"Chapter 5",q:"The word 'engineer' takes stress on:",correct:"The final syllable: engi-NEER (ending -eer takes ultimate stress)",wrong:["The first syllable: EN-gi-neer","The second syllable: en-GI-neer","Both the first and last syllables"]},
+{topic:"Chapter 5",q:"In the sentence 'He DOES like coffee', stressing 'does' serves to:",correct:"Emphasize the truth of the statement (affirmative emphasis)",wrong:["Turn it into a question","Indicate past tense","Mark 'does' as a content word"]},
+{topic:"Chapter 5",q:"The weak form /wəz/ corresponds to which strong form?",correct:"was /wɒz/",wrong:["were /wɜː/","is /ɪz/","has /hæz/"]},
+
 ]; // end ALL_QUESTIONS
 
 // ═══════════════════════════════════
@@ -410,7 +569,7 @@ function shuffle(arr){
 function startQuiz(){
   const pool=ALL_QUESTIONS.filter(q=>selectedChapters.has(q.topic));
   if(pool.length<1){alert('Chọn ít nhất 1 chương!');return;}
-  questions=shuffle(pool).slice(0,30);
+  questions=shuffle(pool).slice(0,35);
   current=0;score=0;answered=false;
   topicStats={};wrongLog=[];answeredCount=0;timedOut=false;
 
